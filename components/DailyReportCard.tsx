@@ -9,7 +9,6 @@ const followers = [
   {
     avatar: "/avatars/elon.png",
     name: "Elon M.",
-    handle: "followed you",
     icon: <AppIconX size={15} />,
     tags: [
       { label: "142M", color: "bg-lime" },
@@ -20,7 +19,6 @@ const followers = [
   {
     avatar: "/avatars/emma.png",
     name: "Emma C.",
-    handle: "followed you",
     icon: <AppIconInstagram size={15} />,
     tags: [
       { label: "2.4M", color: "bg-lime" },
@@ -31,7 +29,6 @@ const followers = [
   {
     avatar: "/avatars/james.png",
     name: "James M.",
-    handle: "followed you",
     icon: <AppIconX size={15} />,
     tags: [
       { label: "890K", color: "bg-lime" },
@@ -42,7 +39,6 @@ const followers = [
   {
     avatar: "/avatars/priya.png",
     name: "Priya S.",
-    handle: "followed you",
     icon: <AppIconTikTok size={15} />,
     tags: [
       { label: "310K", color: "bg-lime" },
@@ -54,22 +50,31 @@ const followers = [
 
 export default function DailyReportCard() {
   const [idx, setIdx] = useState(0);
-  const [fading, setFading] = useState(false);
+  const [phase, setPhase] = useState<"visible" | "out" | "in">("visible");
   const [count, setCount] = useState(11);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setFading(true);
+      // Swipe out
+      setPhase("out");
       setTimeout(() => {
         setIdx((prev) => (prev + 1) % followers.length);
         setCount((c) => c + 1);
-        setFading(false);
-      }, 250);
+        setPhase("in");
+        // Settle
+        setTimeout(() => setPhase("visible"), 50);
+      }, 300);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
   const f = followers[idx];
+
+  const swipeStyle = {
+    visible: { opacity: 1, transform: "translateY(0)" },
+    out: { opacity: 0, transform: "translateY(-20px)" },
+    in: { opacity: 0, transform: "translateY(16px)" },
+  }[phase];
 
   return (
     <div
@@ -94,34 +99,34 @@ export default function DailyReportCard() {
         <span className="text-xs text-muted ml-auto">Today</span>
       </div>
 
-      {/* Follower -- animated swap */}
-      <div
-        className="px-5 pt-4 pb-3 transition-all duration-250"
-        style={{
-          opacity: fading ? 0 : 1,
-          transform: fading ? "translateY(-6px)" : "translateY(0)",
-          filter: fading ? "blur(4px)" : "blur(0px)",
-        }}
-      >
-        <div className="flex items-start gap-3">
-          <Avatar src={f.avatar} alt={f.name} size={44} />
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-1.5">
-              <span className="text-base font-bold text-ink">{f.name}</span>
-              {f.icon}
-            </div>
-            <p className="text-xs text-muted mt-0.5">{f.handle}</p>
+      {/* Follower area -- fixed height, swipe transition */}
+      <div className="px-5 pt-4 pb-3" style={{ height: 110, overflow: "hidden" }}>
+        <div
+          style={{
+            ...swipeStyle,
+            transition: "opacity 0.3s ease, transform 0.3s ease",
+          }}
+        >
+          <div className="flex items-start gap-3">
+            <Avatar src={f.avatar} alt={f.name} size={44} />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <span className="text-base font-bold text-ink">{f.name}</span>
+                {f.icon}
+              </div>
+              <p className="text-xs text-muted mt-0.5">followed you</p>
 
-            <div className="flex flex-wrap gap-1.5 mt-2.5">
-              {f.tags.map((t) => (
-                <span
-                  key={t.label}
-                  className={`text-[11px] font-bold text-ink ${t.color} px-2.5 py-0.5 border-[2px] border-ink`}
-                  style={{ borderRadius: "var(--radius-sm)" }}
-                >
-                  {t.label}
-                </span>
-              ))}
+              <div className="flex flex-wrap gap-1.5 mt-2.5">
+                {f.tags.map((t) => (
+                  <span
+                    key={t.label}
+                    className={`text-[11px] font-bold text-ink ${t.color} px-2.5 py-0.5 border-[2px] border-ink`}
+                    style={{ borderRadius: "var(--radius-sm)" }}
+                  >
+                    {t.label}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -149,7 +154,7 @@ export default function DailyReportCard() {
         </div>
       </div>
 
-      {/* Footer with live count */}
+      {/* Footer */}
       <div
         className="px-5 py-2.5 border-t-[3px] border-ink bg-cream/50 text-center"
         style={{ borderRadius: "0 0 25px 25px" }}

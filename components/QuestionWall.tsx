@@ -145,12 +145,12 @@ export default function QuestionWall() {
                 >
                   3 found
                 </span>
-                <div
-                  className="w-11 h-11 border-[3px] border-ink bg-cream flex items-center justify-center"
+                <span
+                  className="text-sm font-bold text-ink bg-cream px-2.5 py-1.5 border-[2px] border-ink flex items-center justify-center"
                   style={{ borderRadius: "var(--radius-sm)" }}
                 >
-                  <IconTrendingUp className="w-5 h-5 text-ink" />
-                </div>
+                  <IconTrendingUp className="w-4 h-4 text-ink" />
+                </span>
               </div>
             </div>
 

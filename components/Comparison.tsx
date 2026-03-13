@@ -1,28 +1,81 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AppIconX, AppIconInstagram, AppIconTikTok, IconBell } from "./Icons";
 import Avatar from "./Avatar";
 import AnimateIn from "./AnimateIn";
 
-function LiveCounter() {
-  const [count, setCount] = useState(142);
-  useEffect(() => {
-    // 12 notifications per 5s loop = ~417ms per notification
-    const interval = setInterval(() => {
-      setCount((c) => c + 1);
-    }, 417);
-    return () => clearInterval(interval);
-  }, []);
+/* ── Stock-ticker counter: only changed digits roll ── */
+
+function SlotDigit({ digit, prevDigit }: { digit: string; prevDigit: string }) {
+  const changed = digit !== prevDigit;
+
+  if (!changed) {
+    return <span className="inline-block">{digit}</span>;
+  }
+
   return (
-    <span
-      className="text-xs font-bold text-ink bg-cream px-2.5 py-1 border-[2px] border-ink tabular-nums"
-      style={{ borderRadius: "var(--radius-sm)" }}
-    >
-      {count}
+    <span className="inline-block overflow-hidden relative" style={{ height: "1.2em", width: "0.6em" }}>
+      {/* Old digit sliding out */}
+      <span
+        key={`old-${prevDigit}-${digit}`}
+        className="absolute inset-0 flex items-center justify-center"
+        style={{ animation: "slot-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards" }}
+      >
+        {prevDigit}
+      </span>
+      {/* New digit sliding in */}
+      <span
+        key={`new-${digit}-${prevDigit}`}
+        className="absolute inset-0 flex items-center justify-center"
+        style={{ animation: "slot-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards" }}
+      >
+        {digit}
+      </span>
+      <style>{`
+        @keyframes slot-out {
+          0% { transform: translateY(0); opacity: 1; }
+          100% { transform: translateY(-100%); opacity: 0; }
+        }
+        @keyframes slot-in {
+          0% { transform: translateY(100%); opacity: 0; }
+          100% { transform: translateY(0); opacity: 1; }
+        }
+      `}</style>
     </span>
   );
 }
+
+function AnimatedCounter() {
+  const [count, setCount] = useState(142);
+  const prevRef = useRef("142");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount((c) => {
+        prevRef.current = String(c);
+        return c + 1;
+      });
+    }, 417);
+    return () => clearInterval(interval);
+  }, []);
+
+  const curr = String(count);
+  const prev = prevRef.current.padStart(curr.length, "0");
+
+  return (
+    <span
+      className="text-xs font-bold text-ink bg-cream px-2.5 py-1 border-[2px] border-ink tabular-nums inline-flex"
+      style={{ borderRadius: "var(--radius-sm)", lineHeight: "1.2em" }}
+    >
+      {curr.split("").map((d, i) => (
+        <SlotDigit key={i} digit={d} prevDigit={prev[i] || "0"} />
+      ))}
+    </span>
+  );
+}
+
+/* ── Data ── */
 
 const noiseItems = [
   { handle: "@xj29dk", avatar: "/avatars/sara.png" },
@@ -45,7 +98,9 @@ const signal = [
   { avatar: "/avatars/priya.png", name: "Priya S.", followers: "310K", icon: <AppIconTikTok size={26} /> },
 ];
 
-function NotificationBubble({ handle, avatar }: { handle: string; avatar: string }) {
+/* ── Apple-style notification: slides in from left ── */
+
+function NotificationBubble({ handle, avatar, delay }: { handle: string; avatar: string; delay: number }) {
   return (
     <div
       className="mx-4 mb-2.5 bg-cream/80 border border-ink/8 px-4 py-3 flex items-center gap-3"
@@ -91,7 +146,7 @@ export default function Comparison() {
                   <IconBell className="w-5 h-5 text-muted" />
                   <span className="text-sm font-bold text-muted">Notifications</span>
                 </div>
-                <LiveCounter />
+                <AnimatedCounter />
               </div>
               <div className="relative h-[calc(100%-56px)] overflow-hidden">
                 <style>{`
@@ -102,21 +157,20 @@ export default function Comparison() {
                 `}</style>
                 <div className="pt-2" style={{ animation: "noise-scroll 5s linear infinite" }}>
                   {noiseItems.map((n, i) => (
-                    <NotificationBubble key={`a-${i}`} handle={n.handle} avatar={n.avatar} />
+                    <NotificationBubble key={`a-${i}`} handle={n.handle} avatar={n.avatar} delay={i} />
                   ))}
                   {noiseItems.map((n, i) => (
-                    <NotificationBubble key={`b-${i}`} handle={n.handle} avatar={n.avatar} />
+                    <NotificationBubble key={`b-${i}`} handle={n.handle} avatar={n.avatar} delay={i} />
                   ))}
                 </div>
-                {/* Fade overlays */}
                 <div
                   className="absolute top-0 left-0 right-0 h-14 pointer-events-none"
                   style={{ background: "linear-gradient(to bottom, var(--color-card) 0%, var(--color-card) 20%, transparent 100%)" }}
                 />
-                  <div
-                    className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none"
-                    style={{ background: "linear-gradient(to top, var(--color-card) 0%, var(--color-card) 15%, transparent 100%)" }}
-                  />
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none"
+                  style={{ background: "linear-gradient(to top, var(--color-card) 0%, var(--color-card) 15%, transparent 100%)" }}
+                />
               </div>
             </div>
 

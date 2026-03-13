@@ -10,40 +10,45 @@ import {
   AppIconThreads,
 } from "./Icons";
 
-const icons = [
-  AppIconX, AppIconInstagram, AppIconTikTok,
-  AppIconThreads, AppIconBluesky, AppIconLinkedIn,
-  AppIconX, AppIconInstagram, AppIconTikTok,
-  AppIconThreads, AppIconBluesky, AppIconLinkedIn,
-];
+const iconSet = [AppIconX, AppIconInstagram, AppIconTikTok, AppIconThreads, AppIconBluesky, AppIconLinkedIn];
+
+function IconRow() {
+  return (
+    <>
+      {iconSet.map((Icon, i) => (
+        <div key={i} className="shrink-0 mx-2.5">
+          <Icon size={36} />
+        </div>
+      ))}
+    </>
+  );
+}
 
 function SpinningIcons() {
   return (
-    <div className="relative overflow-hidden mb-4" style={{ height: 40 }}>
-      {/* Fade edges */}
+    <div className="relative overflow-hidden mb-4" style={{ height: 42 }}>
       <div
-        className="absolute inset-y-0 left-0 w-10 z-10 pointer-events-none"
-        style={{ background: "linear-gradient(to right, var(--color-blue), transparent)" }}
+        className="absolute inset-y-0 left-0 w-14 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to right, var(--color-blue) 0%, var(--color-blue) 30%, transparent 100%)" }}
       />
       <div
-        className="absolute inset-y-0 right-0 w-10 z-10 pointer-events-none"
-        style={{ background: "linear-gradient(to left, var(--color-blue), transparent)" }}
+        className="absolute inset-y-0 right-0 w-14 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to left, var(--color-blue) 0%, var(--color-blue) 30%, transparent 100%)" }}
       />
-      <style>{`
-        @keyframes icon-scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
-      <div
-        className="flex items-center gap-3 whitespace-nowrap"
-        style={{ animation: "icon-scroll 8s linear infinite" }}
-      >
-        {icons.map((Icon, i) => (
-          <div key={i} className="shrink-0">
-            <Icon size={36} />
-          </div>
-        ))}
+      <div className="flex items-center">
+        <style>{`
+          @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-246px)); }
+          }
+        `}</style>
+        {/* 246px = 6 icons * (36px + 5px gap) */}
+        <div
+          className="flex items-center shrink-0"
+          style={{ animation: "marquee 2.5s linear infinite" }}
+        >
+          <IconRow /><IconRow /><IconRow /><IconRow />
+        </div>
       </div>
     </div>
   );
