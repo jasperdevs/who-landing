@@ -6,20 +6,20 @@ import TypeWriter from "./TypeWriter";
 export default function Hero() {
   return (
     <section className="relative px-5 pt-4 md:pt-8 pb-6 md:pb-10 overflow-hidden">
-      {/* Canvas covers section */}
+      {/* Canvas full width of section */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <FloatingIcons />
       </div>
 
-      {/* Edge fades -- smooth multi-stop gradients */}
-      <div className="absolute inset-y-0 left-0 w-32 md:w-48 pointer-events-none z-[5]"
-        style={{ background: "linear-gradient(to right, var(--color-cream) 0%, rgba(246,238,219,0.8) 40%, rgba(246,238,219,0) 100%)" }}
+      {/* Strong side fades -- wide and aggressive */}
+      <div className="absolute inset-y-0 left-0 w-[20%] pointer-events-none z-[5]"
+        style={{ background: "linear-gradient(to right, var(--color-cream) 0%, var(--color-cream) 50%, rgba(246,238,219,0) 100%)" }}
       />
-      <div className="absolute inset-y-0 right-0 w-32 md:w-48 pointer-events-none z-[5]"
-        style={{ background: "linear-gradient(to left, var(--color-cream) 0%, rgba(246,238,219,0.8) 40%, rgba(246,238,219,0) 100%)" }}
+      <div className="absolute inset-y-0 right-0 w-[20%] pointer-events-none z-[5]"
+        style={{ background: "linear-gradient(to left, var(--color-cream) 0%, var(--color-cream) 50%, rgba(246,238,219,0) 100%)" }}
       />
-      <div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none z-[5]"
-        style={{ background: "linear-gradient(to top, var(--color-cream) 0%, rgba(246,238,219,0.5) 40%, rgba(246,238,219,0) 100%)" }}
+      <div className="absolute inset-x-0 bottom-0 h-20 pointer-events-none z-[5]"
+        style={{ background: "linear-gradient(to top, var(--color-cream) 0%, rgba(246,238,219,0.6) 40%, rgba(246,238,219,0) 100%)" }}
       />
 
       <div className="relative z-10 mx-auto max-w-3xl">
@@ -33,7 +33,7 @@ export default function Hero() {
             <span className="relative inline-block font-bold text-ink">
               <span className="relative z-10">Who?</span>
               <span
-                className="absolute -bottom-1 left-0 right-0 h-3.5 md:h-5 bg-lime -z-0"
+                className="absolute -bottom-1 left-0 right-0 h-3.5 md:h-5 bg-lime -z-0 sketch-underline"
                 style={{ borderRadius: "var(--radius-sm)" }}
               />
             </span>

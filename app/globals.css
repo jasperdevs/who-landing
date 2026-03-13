@@ -25,9 +25,20 @@
 body {
   background-color: var(--color-cream);
   color: var(--color-ink);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  position: relative;
+}
+
+/* Paper grain overlay on body via pseudo-element */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   background-repeat: repeat;
-  background-size: 256px 256px;
+  background-size: 200px 200px;
 }
 
 ::selection {
@@ -53,6 +64,21 @@ body {
   animation: fade-in 0.6s ease-out forwards;
 }
 
+/* ── Sketch underline animation ── */
+
+@keyframes sketch-in {
+  0% { transform: scaleX(0); }
+  60% { transform: scaleX(1.05); }
+  80% { transform: scaleX(0.98); }
+  100% { transform: scaleX(1); }
+}
+
+.sketch-underline {
+  transform-origin: left;
+  animation: sketch-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.3s;
+}
+
 /* ── Micro-interactions ── */
 
 .card-hover {
@@ -62,7 +88,7 @@ body {
   transform: scale(1.02);
 }
 
-/* ── Noise text jitter ── */
+/* ── Noise text jitter + background noise ── */
 
 @keyframes text-noise {
   0% { transform: translate(0, 0) skewX(0deg); }
@@ -78,11 +104,31 @@ body {
   100% { transform: translate(0, 0) skewX(0deg); }
 }
 
+@keyframes noise-bg-pulse {
+  0% { opacity: 0; }
+  15% { opacity: 0.12; }
+  30% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
 .noise-text {
   display: inline-block;
+  position: relative;
   animation: text-noise 0.3s steps(5) infinite;
   text-decoration: line-through;
   text-decoration-color: rgba(18, 18, 18, 0.3);
+}
+
+.noise-text::before {
+  content: "";
+  position: absolute;
+  inset: -8px -12px;
+  border-radius: var(--radius-sm);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 100px 100px;
+  animation: noise-bg-pulse 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* ── Custom scrollbar ── */

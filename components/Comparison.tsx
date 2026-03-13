@@ -5,18 +5,14 @@ import { AppIconX, AppIconInstagram, AppIconTikTok, IconBell } from "./Icons";
 import Avatar from "./Avatar";
 import AnimateIn from "./AnimateIn";
 
-/* ── Stock-ticker counter: only changed digits roll ── */
+/* ── Stock-ticker counter ── */
 
 function SlotDigit({ digit, prevDigit }: { digit: string; prevDigit: string }) {
   const changed = digit !== prevDigit;
-
-  if (!changed) {
-    return <span className="inline-block">{digit}</span>;
-  }
+  if (!changed) return <span className="inline-block" style={{ width: "0.6em" }}>{digit}</span>;
 
   return (
     <span className="inline-block overflow-hidden relative" style={{ height: "1.2em", width: "0.6em" }}>
-      {/* Old digit sliding out */}
       <span
         key={`old-${prevDigit}-${digit}`}
         className="absolute inset-0 flex items-center justify-center"
@@ -24,7 +20,6 @@ function SlotDigit({ digit, prevDigit }: { digit: string; prevDigit: string }) {
       >
         {prevDigit}
       </span>
-      {/* New digit sliding in */}
       <span
         key={`new-${digit}-${prevDigit}`}
         className="absolute inset-0 flex items-center justify-center"
@@ -99,13 +94,16 @@ const signal = [
   { avatar: "/avatars/priya.png", name: "Priya S.", followers: "310K", icon: <AppIconTikTok size={26} /> },
 ];
 
-/* ── Apple-style notification: slides in from left ── */
+/* ── Notification with slide-in-from-left per bubble ── */
 
-function NotificationBubble({ handle, avatar, delay }: { handle: string; avatar: string; delay: number }) {
+function NotificationBubble({ handle, avatar, index }: { handle: string; avatar: string; index: number }) {
   return (
     <div
-      className="mx-4 mb-2.5 bg-cream/80 border border-ink/8 px-4 py-3 flex items-center gap-3"
-      style={{ borderRadius: "var(--radius-md)" }}
+      className="mx-4 mb-2.5 bg-cream/80 border border-ink/8 px-4 py-3 flex items-center gap-3 notif-slide"
+      style={{
+        borderRadius: "var(--radius-md)",
+        animationDelay: `${index * 0.12}s`,
+      }}
     >
       <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 bg-ink/5">
         <img src={avatar} alt="" className="w-full h-full object-cover object-top" />
@@ -155,13 +153,21 @@ export default function Comparison() {
                     0% { transform: translateY(0); }
                     100% { transform: translateY(-50%); }
                   }
+                  @keyframes notif-slide-in {
+                    0% { transform: translateX(-100%); opacity: 0; }
+                    40% { opacity: 1; }
+                    100% { transform: translateX(0); opacity: 1; }
+                  }
+                  .notif-slide {
+                    animation: notif-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+                  }
                 `}</style>
                 <div className="pt-2" style={{ animation: "noise-scroll 5s linear infinite" }}>
                   {noiseItems.map((n, i) => (
-                    <NotificationBubble key={`a-${i}`} handle={n.handle} avatar={n.avatar} delay={i} />
+                    <NotificationBubble key={`a-${i}`} handle={n.handle} avatar={n.avatar} index={i} />
                   ))}
                   {noiseItems.map((n, i) => (
-                    <NotificationBubble key={`b-${i}`} handle={n.handle} avatar={n.avatar} delay={i} />
+                    <NotificationBubble key={`b-${i}`} handle={n.handle} avatar={n.avatar} index={i + noiseItems.length} />
                   ))}
                 </div>
                 <div
