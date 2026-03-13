@@ -18,46 +18,14 @@
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-muted) var(--color-cream);
 }
 
 body {
   background-color: var(--color-cream);
   color: var(--color-ink);
-}
-
-/* Paper grain rendered via GrainOverlay SVG component */
-
-/* ── Notification card jitter ── */
-@keyframes notif-jitter {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  10% { transform: translate(-0.5px, 0.5px) rotate(-0.3deg); }
-  20% { transform: translate(0.5px, -0.3px) rotate(0.2deg); }
-  30% { transform: translate(-0.3px, 0.3px) rotate(-0.2deg); }
-  40% { transform: translate(0.5px, 0.5px) rotate(0.3deg); }
-  50% { transform: translate(0, -0.5px) rotate(-0.2deg); }
-  60% { transform: translate(-0.5px, 0.3px) rotate(0.2deg); }
-  70% { transform: translate(0.3px, 0px) rotate(-0.3deg); }
-  80% { transform: translate(0, 0.3px) rotate(0.2deg); }
-  90% { transform: translate(-0.3px, -0.3px) rotate(-0.2deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
-}
-.notif-jitter {
-  animation: notif-jitter 0.4s steps(6) infinite;
-}
-
-/* Notification text jitters individually */
-@keyframes text-jitter {
-  0% { transform: translate(0, 0); }
-  15% { transform: translate(-0.4px, 0.3px); }
-  30% { transform: translate(0.3px, -0.4px); }
-  45% { transform: translate(-0.3px, 0.2px); }
-  60% { transform: translate(0.4px, 0.3px); }
-  75% { transform: translate(-0.2px, -0.3px); }
-  100% { transform: translate(0, 0); }
-}
-.notif-text-jitter {
-  display: inline-block;
-  animation: text-jitter 0.25s steps(4) infinite;
+  overflow-anchor: none;
 }
 
 ::selection {
@@ -65,55 +33,105 @@ body {
   color: var(--color-ink);
 }
 
-/* ── Animations with blur ── */
+/* ── Hard blink cursor ── */
+@keyframes cursor-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
 
+/* ── Bell wiggle ── */
+@keyframes bell-ring {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(12deg); }
+  30% { transform: rotate(-10deg); }
+  45% { transform: rotate(6deg); }
+  60% { transform: rotate(-4deg); }
+  75% { transform: rotate(2deg); }
+}
+
+/* ── Bounce chevron ── */
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ── Mobile menu slide ── */
+@keyframes menu-slide-down {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Pixar-style question mark bounce + flip ── */
+@keyframes qmark-pixar {
+  0%, 85%, 100% { transform: translateY(0) scaleY(1) rotate(0deg); }
+  88% { transform: translateY(-8px) scaleY(1.15) rotate(0deg); }
+  91% { transform: translateY(1px) scaleY(0.85) rotate(0deg); }
+  93% { transform: translateY(-12px) scaleY(1.1) rotate(0deg); }
+  95% { transform: translateY(-14px) scaleY(1) rotate(180deg); }
+  96.5% { transform: translateY(-4px) scaleY(1) rotate(180deg); }
+  97.5% { transform: translateY(2px) scaleY(0.9) rotate(180deg); }
+  98.5% { transform: translateY(-1px) scaleY(1) rotate(0deg); }
+}
+.brand-qmark {
+  animation: qmark-pixar 5s ease-in-out infinite;
+  display: inline-block;
+  transform-origin: center bottom;
+}
+
+/* ── Notification slide-in ── */
+@keyframes notif-slide-in {
+  0% { opacity: 0; transform: translateX(-40%) translateY(-8px); }
+  100% { opacity: 1; transform: translateX(0) translateY(0); }
+}
+.notif-slide-in {
+  animation: notif-slide-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Fade-in-up (hero, sections) ── */
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
 .animate-fade-in-up {
   animation: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.animate-fade-in {
-  animation: fade-in 0.6s ease-out forwards;
-}
 
-/* ── Sketch underline animation ── */
-
+/* ── Sketch underline (hero "who") ── */
 @keyframes sketch-in {
   0% { transform: scaleX(0); }
   60% { transform: scaleX(1.05); }
   80% { transform: scaleX(0.98); }
   100% { transform: scaleX(1); }
 }
-
 .sketch-underline {
   transform-origin: left;
   animation: sketch-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: 0.3s;
 }
 
-/* ── Micro-interactions ── */
+/* ── Scroll-triggered hand-drawn underline ── */
+@keyframes draw-underline {
+  from { stroke-dashoffset: 200; }
+  to { stroke-dashoffset: 0; }
+}
+.scroll-underline-path {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+}
+.scroll-underline-path.is-visible {
+  animation: draw-underline 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+
 
 /* ── Neo-brutalist hover shadow ── */
-
 .card-hover, .btn-hover {
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.card-hover:hover {
+.card-hover:hover, .btn-hover:hover {
   transform: translate(-2px, -3px);
   box-shadow: 4px 5px 0px 0px var(--color-ink);
 }
-.btn-hover:hover {
-  transform: translate(-2px, -3px);
-  box-shadow: 4px 5px 0px 0px var(--color-ink);
-}
-/* Dark buttons get a colored shadow instead */
 .btn-hover-dark {
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -121,7 +139,6 @@ body {
   transform: translate(-2px, -3px);
   box-shadow: 4px 5px 0px 0px var(--color-lime);
 }
-/* Text links get a subtle offset + underline */
 .link-hover {
   transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.15s ease;
   text-underline-offset: 3px;
@@ -133,53 +150,44 @@ body {
   text-shadow: 2px 2px 0px var(--color-lime);
 }
 
-/* ── Noise text with grain background ── */
-
-@keyframes noise-bg-pulse {
-  0%, 100% { opacity: 0; }
-  15% { opacity: 0.15; }
-  30% { opacity: 0.05; }
-  50% { opacity: 0.12; }
-  70% { opacity: 0.03; }
+/* ── Slot digit animations (counter) ── */
+@keyframes slot-out {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+@keyframes slot-in {
+  0% { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
-.noise-text {
-  display: inline-block;
-  position: relative;
-  text-decoration: line-through;
-  text-decoration-color: rgba(18, 18, 18, 0.3);
-}
-
-.noise-text::before {
-  content: "";
-  position: absolute;
-  inset: -6px -10px;
-  border-radius: var(--radius-sm);
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEUAAACAAAAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAFXZmEIAAAAGnRSTlMACBMQHyolNDEvQkc8V0xhXHBmd4J3jIeSnVPMr/oAAAGNSURBVHja1dTRcoMgEAXQBUQFNBr+/0NLd4GEZJrMtJ2+MOowHnYROKf2L09S93vJ+8et+/t4Tu7wfB5PnA/H/XD+Ope3kw4Xz3l3Pu7dO6crxx6v/fudDjc7s7t/Oit696l49GdOx+PPh/P+37frY+bv+7dKSVlPpRjmfd975f1+e7T6biV8zjnbp1LZ8l5fvZ5PhzO++V48Mfj8ejDJR9v3ue7v/b7/Jzz7U6+P4enJKUEIQQJIUlKJZVBGINRKq21UgrDMFprrRI0hGGYLMuyqqqmaZqmaVt06Lqu7/u+7/shDMMYx3EcxykaY0zGmBhjijHlnFPOKedcSi6l+FLKUkopiYiIvKjqm4iIiLy86RsRkVJaa621Nto4Y4wxxtjG2v+01444l1zyvJSSS84555xLzqXkXEouueSSSymllFJKKaWUWkqttdZaq621tdbW2lpr/8pa6+ustdbW2lqb1tpaa22ttfYf21pra22tjTHG2Bjjv3b99Q+Hf3+8egB5L3JAR084egAAAABJRU5ErkJggg==");
-  background-repeat: repeat;
-  animation: noise-bg-pulse 3s ease-in-out infinite;
-  pointer-events: none;
-  z-index: -1;
+/* ── Marquee scroll (icon strip) ── */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* ── Custom scrollbar ── */
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-cream);
-}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-cream); }
 ::-webkit-scrollbar-thumb {
   background: var(--color-muted);
   border: 2px solid var(--color-cream);
   border-radius: 100px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-ink);
+::-webkit-scrollbar-thumb:hover { background: var(--color-ink); }
+
+/* ── Focus-visible ── */
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-muted) var(--color-cream);
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

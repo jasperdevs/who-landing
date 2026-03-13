@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Figtree } from "next/font/google";
-import GrainOverlay from "@/components/GrainOverlay";
+import { Baloo_2, Nunito } from "next/font/google";
 import "./globals.css";
 
-const figtree = Figtree({
+
+const nunito = Nunito({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-body",
 });
 
-const garamond = EB_Garamond({
+const baloo = Baloo_2({
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700", "800"],
@@ -42,13 +42,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${figtree.variable} ${garamond.variable} scroll-smooth`}>
+    <html lang="en" className={`${nunito.variable} ${baloo.variable} scroll-smooth`}>
       <body
         className="relative min-h-screen antialiased"
         style={{ fontFamily: "var(--font-body)" }}
       >
         {children}
-        <GrainOverlay />
+
         {/* Bottom fade - subtle */}
         <div
           className="fixed inset-x-0 bottom-0 h-8 pointer-events-none z-50"

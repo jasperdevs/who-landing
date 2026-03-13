@@ -11,115 +11,107 @@ const ICON_SRCS = [
   "/icons/linkedin-appstore-icon.png",
 ];
 
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  iconIdx: number;
-  life: number;
-  maxLife: number;
-  startDist: number;
-  opacity: number;
-  dist: number;
-  rumbleOffset: number;
-  side: number; // 0 = left, 1 = right
-}
+const RIGHT_PATH = [
+  { x: 0.5948, y: 0.1317 }, { x: 0.6958, y: 0.0255 },
+  { x: 0.8096, y: 0.007 }, { x: 0.9042, y: 0.1308 },
+  { x: 0.8419, y: 0.3103 }, { x: 0.6974, y: 0.3305 },
+  { x: 0.6037, y: 0.4409 }, { x: 0.652, y: 0.5858 },
+  { x: 0.7988, y: 0.5575 }, { x: 0.9032, y: 0.6339 },
+  { x: 0.9, y: 0.8452 }, { x: 0.7385, y: 0.9171 },
+  { x: 0.5846, y: 0.8007 }, { x: 0.5552, y: 0.6317 },
+  { x: 0.5547, y: 0.6314 },
+];
 
-const PARTICLE_COUNT = 42;
+const LEFT_PATH = [
+  { x: 0.4052, y: 0.1317 }, { x: 0.3042, y: 0.0255 },
+  { x: 0.1904, y: 0.007 }, { x: 0.0958, y: 0.1308 },
+  { x: 0.1581, y: 0.3103 }, { x: 0.3026, y: 0.3305 },
+  { x: 0.3963, y: 0.4409 }, { x: 0.348, y: 0.5858 },
+  { x: 0.2012, y: 0.5575 }, { x: 0.0968, y: 0.6339 },
+  { x: 0.1, y: 0.8452 }, { x: 0.2615, y: 0.9171 },
+  { x: 0.4154, y: 0.8007 }, { x: 0.4448, y: 0.6317 },
+  { x: 0.4453, y: 0.6314 },
+];
 
-// Deterministic round-robin for icon diversity
-let spawnCounter = 0;
-
-function createParticle(w: number, h: number, cx: number, cy: number): Particle {
-  const side = spawnCounter % 2;
-  const iconIdx = spawnCounter % ICON_SRCS.length;
-  spawnCounter++;
-
-  const pad = 120;
-  const x = side === 0 ? -pad : w + pad;
-
-  // Spawn across full height, biased toward top and bottom but no gaps
-  const third = spawnCounter % 3;
-  let y: number;
-  if (third === 0) y = h * (0.0 + Math.random() * 0.3);
-  else if (third === 1) y = h * (0.35 + Math.random() * 0.3);
-  else y = h * (0.7 + Math.random() * 0.3);
-
-  const dx = cx - x;
-  const dy = cy - y;
-  const d = Math.sqrt(dx * dx + dy * dy);
-  const speed = 0.4 + Math.random() * 0.2;
-
+function catmullRom(pts: { x: number; y: number }[], t: number) {
+  const n = pts.length;
+  const segs = n - 1;
+  const st = Math.max(0, Math.min(1, t)) * segs;
+  const seg = Math.min(Math.floor(st), segs - 1);
+  const lt = st - seg;
+  const lt2 = lt * lt;
+  const lt3 = lt2 * lt;
+  const p0 = pts[Math.max(seg - 1, 0)];
+  const p1 = pts[seg];
+  const p2 = pts[Math.min(seg + 1, n - 1)];
+  const p3 = pts[Math.min(seg + 2, n - 1)];
   return {
-    x, y,
-    vx: (dx / d) * speed,
-    vy: (dy / d) * speed,
-    size: 28 + Math.random() * 8,
-    iconIdx,
-    life: 0,
-    maxLife: d / speed,
-    startDist: d,
-    opacity: 0,
-    dist: d,
-    rumbleOffset: Math.random() * Math.PI * 2,
-    side,
+    x: 0.5 * (2 * p1.x + (-p0.x + p2.x) * lt + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * lt2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * lt3),
+    y: 0.5 * (2 * p1.y + (-p0.y + p2.y) * lt + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * lt2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * lt3),
   };
 }
 
-function seedParticles(w: number, h: number): Particle[] {
-  const cx = w / 2;
-  const cy = h * 0.6;
-  const minDist = Math.min(w, h) * 0.1;
-  const particles: Particle[] = [];
-  spawnCounter = 0;
+const ICON_SIZE = 26;
+const ICON_GAP = 28; // px gap between icons
+const SPEED = 0.0008;
+const FADE_ZONE = 0.45;
+const VORTEX_START = 0.82; // last 18% gets sucked in
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    const p = createParticle(w, h, cx, cy);
-    // Spread evenly across journey
-    const t = i / PARTICLE_COUNT;
-    const targetFrames = Math.floor(t * p.maxLife * 0.6);
 
-    for (let f = 0; f < targetFrames; f++) {
-      const dx = cx - p.x;
-      const dy = cy - p.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < minDist) break;
-      const progress = Math.min(1 - dist / p.startDist, 0.95);
-      const accel = 1 + progress * progress * 1.8;
-      p.x += p.vx * accel;
-      p.y += p.vy * accel;
-      p.life = f + 1;
-    }
+function buildArcLengthTable(pts: { x: number; y: number }[], samples = 200) {
+  const table: number[] = [0];
+  let totalLen = 0;
+  let prev = catmullRom(pts, 0);
+  for (let i = 1; i <= samples; i++) {
+    const cur = catmullRom(pts, i / samples);
+    totalLen += Math.sqrt((cur.x - prev.x) ** 2 + (cur.y - prev.y) ** 2);
+    table.push(totalLen);
+    prev = cur;
+  }
+  for (let i = 0; i < table.length; i++) table[i] /= totalLen;
+  return { table, totalLen };
+}
 
-    const dx = cx - p.x;
-    const dy = cy - p.y;
-    p.dist = Math.sqrt(dx * dx + dy * dy);
-    const dot = dx * p.vx + dy * p.vy;
+// Compute pixel arc length for a path given canvas dimensions
+function pixelArcLength(pts: { x: number; y: number }[], w: number, h: number, samples = 200) {
+  let totalLen = 0;
+  let prev = catmullRom(pts, 0);
+  for (let i = 1; i <= samples; i++) {
+    const cur = catmullRom(pts, i / samples);
+    const dx = (cur.x - prev.x) * w;
+    const dy = (cur.y - prev.y) * h;
+    totalLen += Math.sqrt(dx * dx + dy * dy);
+    prev = cur;
+  }
+  return totalLen;
+}
 
-    if (dot < 0 || p.dist < minDist) {
-      const fresh = createParticle(w, h, cx, cy);
-      fresh.life = 5;
-      for (let f = 0; f < 5; f++) { fresh.x += fresh.vx; fresh.y += fresh.vy; }
-      fresh.dist = Math.sqrt((cx - fresh.x) ** 2 + (cy - fresh.y) ** 2);
-      particles.push(fresh);
-    } else {
-      particles.push(p);
+function arcToT(arcTable: number[], s: number): number {
+  const n = arcTable.length - 1;
+  const clamped = Math.max(0, Math.min(1, s));
+  for (let i = 0; i < n; i++) {
+    if (arcTable[i + 1] >= clamped) {
+      const segLen = arcTable[i + 1] - arcTable[i];
+      const frac = segLen > 0 ? (clamped - arcTable[i]) / segLen : 0;
+      return (i + frac) / n;
     }
   }
-  return particles;
+  return 1;
 }
+
+// Pre-compute arc tables
+const rightArc = buildArcLengthTable(RIGHT_PATH);
+const leftArc = buildArcLengthTable(LEFT_PATH);
 
 export default function FloatingIcons() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
   const imagesRef = useRef<HTMLImageElement[]>([]);
   const frameRef = useRef(0);
   const loadedRef = useRef(false);
-  const initializedRef = useRef(false);
   const dimsRef = useRef({ w: 0, h: 0 });
-  const tickRef = useRef(0);
+  const visibleRef = useRef(true);
+  const resizeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const tOffsetsRef = useRef<{ offsets: number[]; count: number }>({ offsets: [], count: 0 });
 
   useEffect(() => {
     const imgs: HTMLImageElement[] = [];
@@ -127,10 +119,7 @@ export default function FloatingIcons() {
     ICON_SRCS.forEach((src, i) => {
       const img = new Image();
       img.src = src;
-      img.onload = () => {
-        loaded++;
-        if (loaded === ICON_SRCS.length) loadedRef.current = true;
-      };
+      img.onload = () => { loaded++; if (loaded === ICON_SRCS.length) loadedRef.current = true; };
       imgs[i] = img;
     });
     imagesRef.current = imgs;
@@ -139,168 +128,151 @@ export default function FloatingIcons() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const obs = new IntersectionObserver(([e]) => { visibleRef.current = e.isIntersecting; }, { threshold: 0 });
+    obs.observe(canvas);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    function resize() {
+    function initCanvas() {
       if (!canvas) return;
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      dimsRef.current = { w: rect.width, h: rect.height };
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      const w = rect.width;
+      const h = rect.height;
+      dimsRef.current = { w, h };
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-      if (!initializedRef.current) {
-        particlesRef.current = seedParticles(rect.width, rect.height);
-        initializedRef.current = true;
+
+      // Calculate actual pixel arc length and determine icon count
+      const pixelArcLen = pixelArcLength(RIGHT_PATH, w, h);
+      const iconStep = ICON_SIZE + ICON_GAP;
+      const count = Math.max(10, Math.floor(pixelArcLen / iconStep));
+      const spacing = 1 / count;
+
+      const offsets: number[] = [];
+      for (let side = 0; side < 2; side++) {
+        for (let i = 0; i < count; i++) {
+          offsets.push(i * spacing);
+        }
       }
+      tOffsetsRef.current = { offsets, count };
     }
 
-    resize();
-    window.addEventListener("resize", resize);
+    function handleResize() {
+      if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
+      resizeTimerRef.current = setTimeout(initCanvas, 150);
+    }
+
+    initCanvas();
+    window.addEventListener("resize", handleResize);
 
     function draw() {
       if (!canvas || !ctx) return;
+      frameRef.current = requestAnimationFrame(draw);
+      if (!visibleRef.current) return;
       const { w, h } = dimsRef.current;
-      if (w === 0) { frameRef.current = requestAnimationFrame(draw); return; }
-
-      tickRef.current++;
-      const tick = tickRef.current;
-      const cx = w / 2;
-      const cy = h * 0.6;
+      if (w === 0 || !loadedRef.current) return;
       ctx.clearRect(0, 0, w, h);
 
-      if (!loadedRef.current) {
-        frameRef.current = requestAnimationFrame(draw);
-        return;
-      }
+      const { offsets, count } = tOffsetsRef.current;
+      const total = count * 2;
+      const spacing = 1 / count;
 
-      const absorb = Math.min(w, h) * 0.14;
-      const warpStart = Math.min(w, h) * 0.55;
+      for (let idx = 0; idx < total; idx++) {
+        offsets[idx] += SPEED;
+        if (offsets[idx] > 1) offsets[idx] -= 1;
 
-      // Update
-      particlesRef.current.forEach((p, i) => {
-        p.life++;
-        const dx = cx - p.x;
-        const dy = cy - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const progress = Math.min(Math.max(1 - dist / p.startDist, 0), 0.95);
+        const side = idx < count ? 0 : 1;
+        const path = side === 0 ? RIGHT_PATH : LEFT_PATH;
+        const arcTable = side === 0 ? rightArc.table : leftArc.table;
+        const s = offsets[idx];
+        const t = arcToT(arcTable, s);
+        const iconIdx = idx % ICON_SRCS.length;
+        const img = imagesRef.current[iconIdx];
+        if (!img) continue;
 
-        const accel = 1 + progress * progress * 2.2;
-        p.x += p.vx * accel;
-        p.y += p.vy * accel;
+        const pos = catmullRom(path, t);
+        const x = pos.x * w;
+        const y = pos.y * h;
 
-        const dx2 = cx - p.x;
-        const dy2 = cy - p.y;
-        p.dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+        // Tangent for rotation — follow the curve fully
+        const dt = 0.005;
+        const next = catmullRom(path, Math.min(t + dt, 1));
+        const prev = catmullRom(path, Math.max(t - dt, 0));
+        const angle = Math.atan2((next.y - prev.y) * h, (next.x - prev.x) * w);
 
-        const dot = dx2 * p.vx + dy2 * p.vy;
-        const fadeIn = Math.min(p.life / (p.maxLife * 0.1), 1);
-        const fadeOut = p.dist < absorb ? Math.pow(p.dist / absorb, 0.4) : 1;
-        p.opacity = fadeIn * fadeOut * 0.85;
-
-        if (p.dist < absorb * 0.03 || p.life > p.maxLife || dot < 0) {
-          particlesRef.current[i] = createParticle(w, h, cx, cy);
-        }
-      });
-
-      const sorted = [...particlesRef.current].sort((a, b) => b.dist - a.dist);
-
-      sorted.forEach((p) => {
-        if (p.life < 3 || p.opacity < 0.01) return;
-        const img = imagesRef.current[p.iconIdx];
-        if (!img) return;
-
-        const shrink = p.dist < absorb ? 0.1 + 0.9 * (p.dist / absorb) : 1;
-        const drawSize = p.size * shrink;
-        if (drawSize < 2) return;
-
-        const rumbleIntensity = p.dist < warpStart ? (1 - p.dist / warpStart) * 2 : 0;
-        const rx = Math.sin(tick * 0.06 + p.rumbleOffset) * rumbleIntensity;
-        const ry = Math.cos(tick * 0.08 + p.rumbleOffset * 1.3) * rumbleIntensity;
-
-        const dx2 = cx - p.x;
-        const dy2 = cy - p.y;
-
-        // Warp
-        let scaleX = 1;
-        let scaleY = 1;
-        let angle = 0;
-        let warpT = 0;
-
-        if (p.dist < warpStart) {
-          warpT = 1 - p.dist / warpStart;
-          const warp = warpT * warpT * 2;
-          angle = Math.atan2(dy2, dx2);
-          scaleX = 1 + warp;
-          scaleY = Math.max(1 - warp * 0.45, 0.25);
+        // Fade
+        let alpha = 1;
+        if (s < FADE_ZONE) {
+          const p = s / FADE_ZONE;
+          alpha = p * p * (3 - 2 * p);
+        } else if (s > 1 - FADE_ZONE) {
+          const p = (1 - s) / FADE_ZONE;
+          alpha = p * p * (3 - 2 * p);
         }
 
-        const r = drawSize * 0.22;
-        const half = drawSize / 2;
+        if (alpha < 0.01) continue;
 
-        // Chromatic aberration ghost -- offset copy in blue tint near center
-        if (warpT > 0.15) {
-          const aberration = warpT * 4;
-          const ghostAngle = angle + Math.PI;
-          const gx = Math.cos(ghostAngle) * aberration;
-          const gy = Math.sin(ghostAngle) * aberration;
+        // Vortex — pull toward endpoint, shrink, accelerate
+        let drawX = x;
+        let drawY = y;
+        let sz = ICON_SIZE;
+        let drawAngle = angle;
 
-          ctx.save();
-          ctx.globalAlpha = p.opacity * warpT * 0.4;
-          ctx.translate(p.x + rx + gx, p.y + ry + gy);
-          if (p.dist < warpStart) {
-            ctx.rotate(angle);
-            ctx.scale(scaleX * 1.05, scaleY * 1.05);
-            ctx.rotate(-angle);
-          }
-          ctx.beginPath();
-          ctx.roundRect(-half, -half, drawSize, drawSize, r);
-          ctx.clip();
-          ctx.drawImage(img, -half, -half, drawSize, drawSize);
-          // Blue tint overlay
-          ctx.globalCompositeOperation = "source-atop";
-          ctx.fillStyle = "rgba(169,198,255,0.5)";
-          ctx.fillRect(-half, -half, drawSize, drawSize);
-          ctx.restore();
+        if (s > VORTEX_START) {
+          const vt = (s - VORTEX_START) / (1 - VORTEX_START); // 0 to 1
+          const eased = vt * vt; // quadratic ease-in for acceleration feel
+
+          // Pull position toward the endpoint
+          const endPt = catmullRom(path, 1);
+          const ex = endPt.x * w;
+          const ey = endPt.y * h;
+          drawX = x + (ex - x) * eased * 0.5;
+          drawY = y + (ey - y) * eased * 0.5;
+
+          // Shrink
+          sz = ICON_SIZE * (1 - eased * 0.75);
+
+          // Rotate toward the hole
+          const toHole = Math.atan2(ey - y, ex - x);
+          drawAngle = angle * (1 - eased) + toHole * eased;
         }
 
-        // Main icon
+        if (sz < 2) continue;
+
+        const r = sz * 0.22;
+        const half = sz / 2;
+
         ctx.save();
-        ctx.globalAlpha = p.opacity;
-        ctx.translate(p.x + rx, p.y + ry);
-
-        if (p.dist < warpStart) {
-          ctx.rotate(angle);
-          ctx.scale(scaleX, scaleY);
-          ctx.rotate(-angle);
-        }
-
-        // Brightness boost near center
-        if (warpT > 0.3) {
-          ctx.filter = `brightness(${1 + warpT * 0.6})`;
-        }
-
+        ctx.globalAlpha = alpha;
+        ctx.translate(drawX, drawY);
+        ctx.rotate(drawAngle);
         ctx.beginPath();
-        ctx.roundRect(-half, -half, drawSize, drawSize, r);
+        ctx.roundRect(-half, -half, sz, sz, r);
         ctx.clip();
-        ctx.drawImage(img, -half, -half, drawSize, drawSize);
-
-        ctx.restore()
-      });
-
-      frameRef.current = requestAnimationFrame(draw);
+        ctx.drawImage(img, -half, -half, sz, sz);
+        ctx.restore();
+      }
     }
 
     frameRef.current = requestAnimationFrame(draw);
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", handleResize);
+      if (resizeTimerRef.current) clearTimeout(resizeTimerRef.current);
       cancelAnimationFrame(frameRef.current);
     };
   }, []);
 
   return (
     <canvas
+      id="floating-icons-canvas"
       ref={canvasRef}
       className="absolute inset-0 w-full h-full pointer-events-none"
       style={{ zIndex: 0 }}

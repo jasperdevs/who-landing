@@ -1,6 +1,7 @@
 "use client";
 
 import AnimateIn from "./AnimateIn";
+import HoverShimmer from "./HoverShimmer";
 import {
   AppIconX,
   AppIconInstagram,
@@ -35,12 +36,6 @@ function SpinningIcons() {
         className="absolute inset-y-0 right-0 w-12 z-10 pointer-events-none"
         style={{ background: "linear-gradient(to left, var(--color-blue) 0%, var(--color-blue) 30%, transparent 100%)" }}
       />
-      <style>{`
-        @keyframes marquee-scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
       <div
         className="flex items-center w-max"
         style={{ animation: "marquee-scroll 5s linear infinite" }}
@@ -64,6 +59,9 @@ export default function HowItWorks() {
             >
               How it works.
             </h2>
+            <p className="mt-3 text-lg text-muted max-w-sm mx-auto leading-relaxed">
+              Three steps. One daily report. Zero noise.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -72,16 +70,15 @@ export default function HowItWorks() {
               className="border-[3px] border-ink bg-blue p-6 flex flex-col card-hover overflow-hidden"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
-
               <SpinningIcons />
               <h3
                 className="text-2xl font-bold text-ink tracking-tight"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Connect your accounts
+                <HoverShimmer>Connect your accounts</HoverShimmer>
               </h3>
               <p className="text-sm text-ink/50 mt-2 leading-relaxed">
-                Link X, Instagram, TikTok and more. Takes 30 seconds.
+                <HoverShimmer>Link X, Instagram, TikTok and more. Takes 30 seconds.</HoverShimmer>
               </p>
             </div>
 
@@ -90,7 +87,6 @@ export default function HowItWorks() {
               className="border-[3px] border-ink bg-lime p-6 flex flex-col card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
-
               <div
                 className="w-10 h-10 border-[3px] border-ink bg-cream flex items-center justify-center mb-5"
                 style={{ borderRadius: "var(--radius-sm)" }}
@@ -103,10 +99,10 @@ export default function HowItWorks() {
                 className="text-2xl font-bold text-ink tracking-tight"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                We analyze every follower
+                <HoverShimmer>We analyze every follower</HoverShimmer>
               </h3>
               <p className="text-sm text-ink/50 mt-2 leading-relaxed">
-                Who? scans and surfaces the followers that actually matter.
+                <HoverShimmer>Who? scans and surfaces the followers that actually matter.</HoverShimmer>
               </p>
             </div>
 
@@ -115,7 +111,6 @@ export default function HowItWorks() {
               className="border-[3px] border-ink bg-card p-6 flex flex-col card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
-
               <div
                 className="w-10 h-10 border-[3px] border-ink bg-apricot flex items-center justify-center mb-5"
                 style={{ borderRadius: "var(--radius-sm)" }}
@@ -129,10 +124,10 @@ export default function HowItWorks() {
                 className="text-2xl font-bold text-ink tracking-tight"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                Get your daily signal
+                <HoverShimmer>Get your daily signal</HoverShimmer>
               </h3>
               <p className="text-sm text-ink/50 mt-2 leading-relaxed">
-                A daily report with insights, not just a list of usernames.
+                <HoverShimmer>A daily report with insights, not just a list of usernames.</HoverShimmer>
               </p>
             </div>
           </div>

@@ -8,6 +8,9 @@ import {
 } from "./Icons";
 import Avatar from "./Avatar";
 import AnimateIn from "./AnimateIn";
+import ScrollUnderline from "./ScrollUnderline";
+import HoverShimmer from "./HoverShimmer";
+
 
 export default function QuestionWall() {
   return (
@@ -19,18 +22,23 @@ export default function QuestionWall() {
               className="text-4xl md:text-5xl font-bold tracking-tight text-ink"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Ask anything.
+               Ask{" "}
+              <span className="relative inline-block">
+                anything.
+                <ScrollUnderline />
+              </span>
             </h2>
             <p className="mt-3 text-lg text-muted max-w-sm mx-auto leading-relaxed">
               Who? answers the questions your notifications never could.
             </p>
           </div>
+        </AnimateIn>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 
             {/* Large -- who noticed you? */}
             <div
-              className="col-span-2 border-[3px] border-ink bg-blue p-6 md:p-7 card-hover"
+              className="sm:col-span-2 border-[3px] border-ink bg-blue p-6 md:p-7 card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <div className="flex items-start justify-between gap-4 mb-5">
@@ -38,7 +46,7 @@ export default function QuestionWall() {
                   className="text-2xl md:text-3xl font-bold text-ink leading-snug tracking-tight"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  who noticed you?
+                   <HoverShimmer>who noticed you?</HoverShimmer>
                 </h3>
                 <div
                   className="w-11 h-11 border-[3px] border-ink bg-cream flex items-center justify-center shrink-0"
@@ -64,7 +72,7 @@ export default function QuestionWall() {
 
             {/* Tall -- who matters? */}
             <div
-              className="col-span-2 md:col-span-1 md:row-span-2 border-[3px] border-ink bg-lime p-6 md:p-7 flex flex-col justify-between card-hover"
+              className="sm:col-span-2 md:col-span-1 md:row-span-2 border-[3px] border-ink bg-lime p-6 md:p-7 flex flex-col justify-between card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <div
@@ -78,10 +86,10 @@ export default function QuestionWall() {
                   className="text-2xl md:text-3xl font-bold text-ink leading-snug tracking-tight mt-6"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  who<br />matters?
+                  <HoverShimmer>who</HoverShimmer><br /><HoverShimmer>matters?</HoverShimmer>
                 </h3>
                 <p className="text-sm text-ink/60 mt-2">
-                  Filter the noise. Surface the signal.
+                  <HoverShimmer>Filter the noise. Surface the signal.</HoverShimmer>
                 </p>
               </div>
             </div>
@@ -101,7 +109,7 @@ export default function QuestionWall() {
                 className="text-lg font-bold text-ink leading-snug tracking-tight mt-3"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                who just followed?
+                <HoverShimmer>who just followed?</HoverShimmer>
               </h3>
             </div>
 
@@ -120,13 +128,13 @@ export default function QuestionWall() {
                 className="text-lg font-bold text-ink leading-snug tracking-tight mt-3"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                who unfollowed?
+                <HoverShimmer>who unfollowed?</HoverShimmer>
               </h3>
             </div>
 
             {/* Wide -- who has 1M+ followers? */}
             <div
-              className="col-span-2 border-[3px] border-ink bg-card p-6 md:p-7 flex items-center justify-between gap-4 card-hover"
+              className="sm:col-span-2 border-[3px] border-ink bg-card p-6 md:p-7 flex items-center justify-between gap-4 card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <div>
@@ -134,9 +142,9 @@ export default function QuestionWall() {
                   className="text-2xl font-bold text-ink leading-snug tracking-tight"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  who has 1M+ followers?
+                   <HoverShimmer>who has 1M+ followers?</HoverShimmer>
                 </h3>
-                <p className="text-sm text-muted mt-1">Find the big accounts in your followers.</p>
+                <p className="text-sm text-muted mt-1"><HoverShimmer>Find the big accounts in your followers.</HoverShimmer></p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <span
@@ -169,12 +177,11 @@ export default function QuestionWall() {
                 className="text-lg font-bold text-ink leading-snug tracking-tight mt-3"
                 style={{ fontFamily: "var(--font-display)" }}
               >
-                who&apos;s a founder?
+                <HoverShimmer>who&apos;s a founder?</HoverShimmer>
               </h3>
             </div>
 
           </div>
-        </AnimateIn>
       </div>
     </section>
   );

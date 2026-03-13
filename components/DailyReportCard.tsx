@@ -1,167 +1,111 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { AppIconX, AppIconInstagram, AppIconTikTok } from "./Icons";
-import Avatar from "./Avatar";
+import { AppIconX } from "./Icons";
+import BrandName from "./BrandName";
 
-const followers = [
-  {
-    avatar: "/avatars/elon.png",
-    name: "Elon M.",
-    icon: <AppIconX size={15} />,
-    tags: [
-      { label: "142M", color: "bg-lime" },
-      { label: "Top 0.01%", color: "bg-blue" },
-      { label: "Tech", color: "bg-apricot" },
-    ],
-  },
-  {
-    avatar: "/avatars/emma.png",
-    name: "Emma C.",
-    icon: <AppIconInstagram size={15} />,
-    tags: [
-      { label: "2.4M", color: "bg-lime" },
-      { label: "Creator", color: "bg-blue" },
-      { label: "Lifestyle", color: "bg-apricot" },
-    ],
-  },
-  {
-    avatar: "/avatars/james.png",
-    name: "James M.",
-    icon: <AppIconX size={15} />,
-    tags: [
-      { label: "890K", color: "bg-lime" },
-      { label: "Founder", color: "bg-blue" },
-      { label: "SaaS", color: "bg-apricot" },
-    ],
-  },
-  {
-    avatar: "/avatars/priya.png",
-    name: "Priya S.",
-    icon: <AppIconTikTok size={15} />,
-    tags: [
-      { label: "310K", color: "bg-lime" },
-      { label: "Viral", color: "bg-blue" },
-      { label: "Design", color: "bg-apricot" },
-    ],
-  },
+const signals = [
+  { avatar: "/avatars/elon.png", name: "Elon M.", stat: "142M followers", platform: "X" },
+  { avatar: "/avatars/emma.png", name: "Emma C.", stat: "2.4M followers", platform: "IG" },
+  { avatar: "/avatars/james.png", name: "James M.", stat: "Founder, SaaS", platform: "X" },
 ];
 
 export default function DailyReportCard() {
   const [idx, setIdx] = useState(0);
   const [phase, setPhase] = useState<"visible" | "out" | "in">("visible");
-  const [count, setCount] = useState(11);
+  const ref = useRef<HTMLDivElement>(null);
+  const visibleRef = useRef(true);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { visibleRef.current = entry.isIntersecting; },
+      { threshold: 0 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Swipe out
+      if (!visibleRef.current) return;
       setPhase("out");
       setTimeout(() => {
-        setIdx((prev) => (prev + 1) % followers.length);
-        setCount((c) => c + 1);
+        setIdx((prev) => (prev + 1) % signals.length);
         setPhase("in");
-        // Settle
         setTimeout(() => setPhase("visible"), 50);
-      }, 300);
+      }, 250);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
 
-  const f = followers[idx];
-
+  const s = signals[idx];
   const swipeStyle = {
     visible: { opacity: 1, transform: "translateY(0)" },
-    out: { opacity: 0, transform: "translateY(-20px)" },
-    in: { opacity: 0, transform: "translateY(16px)" },
+    out: { opacity: 0, transform: "translateY(-14px)" },
+    in: { opacity: 0, transform: "translateY(10px)" },
   }[phase];
 
   return (
-    <div
-      className="border-[3px] border-ink bg-card shadow-[0_12px_48px_rgba(0,0,0,0.12)]"
-      style={{ borderRadius: "var(--radius-xl)", width: "100%", maxWidth: 330 }}
-    >
-      {/* Header */}
-      <div className="flex items-center gap-2.5 px-5 py-3 border-b-[3px] border-ink">
+    <div ref={ref} className="bg-card w-full">
+      {/* App header */}
+      <div className="flex items-center gap-2 px-4 pt-2 pb-2">
         <Image
           src="/who-icon.png"
           alt="Who?"
-          width={20}
-          height={20}
+          width={22}
+          height={22}
           style={{ borderRadius: "22%" }}
         />
-        <span
-          className="text-sm font-bold text-ink"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          Your signal
-        </span>
-        <span className="text-xs text-muted ml-auto">Today</span>
+        <BrandName size="text-sm" />
       </div>
 
-      {/* Follower area -- fixed height, swipe transition */}
-      <div className="px-5 pt-4 pb-3" style={{ height: 110, overflow: "hidden" }}>
+      {/* Noise section — messy anonymous handles */}
+      <div className="px-4 pb-2">
+        <p className="text-[9px] font-bold text-muted/40 uppercase tracking-widest mb-1.5">232 new followers</p>
+        <div className="flex flex-wrap gap-1">
+          {["@xk29d", "@user847", "@mktguru", "@s1lv3r", "@cool42", "@jan_s", "@noname", "@rand33", "@hx_91", "@bot44", "@zz_mk"].map((h) => (
+            <span key={h} className="text-[9px] text-muted/30 font-mono">{h}</span>
+          ))}
+          <span className="text-[9px] text-muted/20 font-mono">...</span>
+        </div>
+      </div>
+
+      {/* Divider with label */}
+      <div className="flex items-center gap-2 px-4 py-2">
+        <div className="flex-1 h-[1px] bg-ink/8" />
+        <span
+          className="text-[9px] font-bold text-ink/60 uppercase tracking-widest bg-lime/50 px-2 py-0.5"
+          style={{ borderRadius: 4 }}
+        >
+          Signal
+        </span>
+        <div className="flex-1 h-[1px] bg-ink/8" />
+      </div>
+
+      {/* Signal — one clear highlighted follower */}
+      <div className="px-4 pb-4" style={{ minHeight: 72, overflow: "hidden" }}>
         <div
           style={{
             ...swipeStyle,
-            transition: "opacity 0.3s ease, transform 0.3s ease",
+            transition: "opacity 0.25s ease, transform 0.25s ease",
           }}
         >
-          <div className="flex items-start gap-3">
-            <Avatar src={f.avatar} alt={f.name} size={44} />
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 border-[2px] border-ink">
+              <img src={s.avatar} alt={s.name} className="w-full h-full object-cover object-top" />
+            </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5">
-                <span className="text-base font-bold text-ink">{f.name}</span>
-                {f.icon}
+                <span className="text-sm font-bold text-ink">{s.name}</span>
+                <AppIconX size={13} />
               </div>
-              <p className="text-xs text-muted mt-0.5">followed you</p>
-
-              <div className="flex flex-wrap gap-1.5 mt-2.5">
-                {f.tags.map((t) => (
-                  <span
-                    key={t.label}
-                    className={`text-[11px] font-bold text-ink ${t.color} px-2.5 py-0.5 border-[2px] border-ink`}
-                    style={{ borderRadius: "var(--radius-sm)" }}
-                  >
-                    {t.label}
-                  </span>
-                ))}
-              </div>
+              <p className="text-[11px] text-muted">{s.stat}</p>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Insight strip */}
-      <div className="mx-5 mb-4">
-        <div
-          className="bg-cream border-[2px] border-ink/10 px-4 py-3 flex items-center gap-3"
-          style={{ borderRadius: "var(--radius-sm)" }}
-        >
-          <div
-            className="w-7 h-7 bg-lime border-[2px] border-ink flex items-center justify-center shrink-0"
-            style={{ borderRadius: 8 }}
-          >
-            <svg className="w-3.5 h-3.5 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
-              <polyline points="17 6 23 6 23 12" />
-            </svg>
-          </div>
-          <div className="min-w-0">
-            <p className="text-xs font-bold text-ink">Unusual activity</p>
-            <p className="text-[11px] text-muted">3 notable follows in the last hour</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div
-        className="px-5 py-2.5 border-t-[3px] border-ink bg-cream/50 text-center"
-        style={{ borderRadius: "0 0 25px 25px" }}
-      >
-        <p className="text-xs font-bold text-muted">
-          +<span className="tabular-nums">{count}</span> new today &middot; 4 notable
-        </p>
       </div>
     </div>
   );
