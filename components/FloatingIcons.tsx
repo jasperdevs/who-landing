@@ -252,6 +252,7 @@ export default function FloatingIcons() {
 
         ctx.save();
         ctx.globalAlpha = alpha;
+        ctx.filter = "grayscale(1) sepia(0.15) brightness(1.1)";
         ctx.translate(drawX, drawY);
         ctx.rotate(drawAngle);
         ctx.beginPath();
