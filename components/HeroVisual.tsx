@@ -1,87 +1,132 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { AppIconX, AppIconInstagram, AppIconTikTok, AppIconThreads, AppIconBluesky, AppIconLinkedIn } from "./Icons";
+import { AppIconX, AppIconInstagram } from "./Icons";
 import Avatar from "./Avatar";
 
-const iconPositions = [
-  { Icon: AppIconInstagram, top: "5%", left: "5%", size: 46, delay: 0 },
-  { Icon: AppIconX, top: "32%", left: "0%", size: 42, delay: 0.3 },
-  { Icon: AppIconTikTok, top: "60%", left: "8%", size: 44, delay: 0.7 },
-  { Icon: AppIconThreads, top: "12%", left: "32%", size: 36, delay: 1.1 },
-  { Icon: AppIconBluesky, top: "82%", left: "3%", size: 38, delay: 0.5 },
-  { Icon: AppIconLinkedIn, top: "50%", left: "28%", size: 36, delay: 0.9 },
+const iconSrcs = [
+  "/icons/x-appstore-raw.jpg",
+  "/icons/instagram-appstore-raw.jpg",
+  "/icons/tiktok-appstore-raw.jpg",
+  "/icons/threads-appstore-icon.png",
+  "/icons/bluesky-appstore-icon.png",
+  "/icons/linkedin-appstore-icon.png",
 ];
 
-const TRAIL_TEXT = "followed you · new follower · entered your orbit · discovered you · just followed · noticed you · started following · ";
+// Spiral on left that straightens into a band going right
+// Starts with a tight loop top-left, curves down and right, straightens to exit right
+const TRAIL_PATH =
+  "M120,30 C180,10 200,100 160,140 C120,180 80,130 100,80 C120,30 180,60 200,120 C220,180 260,220 320,230 C400,245 500,250 700,250";
 
 export default function HeroVisual() {
-  return (
-    <div className="relative w-full" style={{ minHeight: 440 }}>
-      <style>{`
-        @keyframes icon-drift {
-          0%, 100% { transform: translateY(0px); opacity: 0.55; }
-          50% { transform: translateY(-6px); opacity: 0.9; }
-        }
-      `}</style>
+  const pathRef = useRef<SVGPathElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef(0);
+  const offsetRef = useRef(0);
 
-      {/* Scattered platform icons — left side */}
-      <div className="absolute left-0 top-0 w-[38%]" style={{ height: 440 }}>
-        {iconPositions.map(({ Icon, top, left, size, delay }, i) => (
+  useEffect(() => {
+    const path = pathRef.current;
+    const container = containerRef.current;
+    if (!path || !container) return;
+
+    const icons = container.children;
+    const count = icons.length;
+    const spacing = 1 / count;
+    const totalLen = path.getTotalLength();
+
+    function animate() {
+      if (!path) return;
+      offsetRef.current = (offsetRef.current + 0.0004) % spacing;
+
+      for (let i = 0; i < count; i++) {
+        const t = ((i * spacing + offsetRef.current) % 1);
+        const pt = path.getPointAtLength(t * totalLen);
+
+        // Fade: starts faint in the spiral, gets solid as it straightens
+        const opacity = 0.25 + t * 0.75;
+        // Scale: smaller in spiral, full size in the straight part
+        const scale = 0.6 + t * 0.4;
+
+        const el = icons[i] as HTMLElement;
+        el.style.transform = `translate(${pt.x}px, ${pt.y}px) translate(-50%, -50%) scale(${scale})`;
+        el.style.opacity = `${opacity}`;
+      }
+
+      frameRef.current = requestAnimationFrame(animate);
+    }
+
+    frameRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameRef.current);
+  }, []);
+
+  // 5 repetitions of 6 icons = 30 icons along the path
+  const allIcons: string[] = [];
+  for (let r = 0; r < 5; r++) {
+    allIcons.push(...iconSrcs);
+  }
+
+  return (
+    <div className="relative w-full overflow-visible" style={{ height: 500 }}>
+      {/* SVG path — visible as thick band on the straight part, faint on spiral */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 700 300"
+        preserveAspectRatio="xMidYMid meet"
+        style={{ overflow: "visible" }}
+      >
+        {/* Faint spiral portion */}
+        <path
+          d="M120,30 C180,10 200,100 160,140 C120,180 80,130 100,80 C120,30 180,60 200,120 C220,180 260,220 320,230"
+          fill="none"
+          stroke="#121212"
+          strokeWidth="2"
+          opacity="0.08"
+        />
+        {/* Thick band — the straight part */}
+        <path
+          d="M320,230 C400,245 500,250 700,250"
+          fill="none"
+          stroke="#121212"
+          strokeWidth="36"
+          strokeLinecap="round"
+          opacity="1"
+        />
+        {/* Hidden path for icon positioning */}
+        <path
+          ref={pathRef}
+          d={TRAIL_PATH}
+          fill="none"
+          stroke="none"
+        />
+      </svg>
+
+      {/* Icons positioned along the path */}
+      <div ref={containerRef} className="absolute inset-0" style={{ pointerEvents: "none" }}>
+        {allIcons.map((src, i) => (
           <div
             key={i}
-            className="absolute"
-            style={{
-              top,
-              left,
-              animation: `icon-drift 3.5s ease-in-out ${delay}s infinite`,
-            }}
+            className="absolute top-0 left-0 will-change-transform"
+            style={{ opacity: 0 }}
           >
-            <Icon size={size} />
+            <img
+              src={src}
+              alt=""
+              width={32}
+              height={32}
+              style={{ width: 32, height: 32, borderRadius: "22%", display: "block" }}
+            />
           </div>
         ))}
       </div>
 
-      {/* Flowing trail — connects icons to report */}
-      <svg
-        className="absolute inset-0 w-full pointer-events-none"
-        viewBox="0 0 900 440"
-        preserveAspectRatio="none"
-        style={{ height: 440, overflow: "visible" }}
+      {/* Daily report card — right side, positioned where the band ends */}
+      <div
+        className="absolute z-10"
+        style={{ right: 0, top: "50%", transform: "translateY(-50%)", width: "52%", maxWidth: 380 }}
       >
-        {/* The thick band */}
-        <path
-          id="hero-trail"
-          d="M180,80 C260,80 300,200 360,240 C420,280 440,340 520,340 L900,340"
-          fill="none"
-          stroke="#121212"
-          strokeWidth="32"
-          strokeLinecap="round"
-        />
-        {/* Scrolling text along the band */}
-        <text
-          fontSize="13"
-          fontWeight="600"
-          fill="#fff"
-          fontFamily="Figtree, sans-serif"
-        >
-          <textPath href="#hero-trail" dominantBaseline="central">
-            <animate
-              attributeName="startOffset"
-              from="-100%"
-              to="100%"
-              dur="20s"
-              repeatCount="indefinite"
-            />
-            {TRAIL_TEXT}{TRAIL_TEXT}{TRAIL_TEXT}
-          </textPath>
-        </text>
-      </svg>
-
-      {/* Daily report card — right side */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[52%] max-w-[380px]">
         <div
-          className="border-2 border-ink bg-card relative z-10"
+          className="border-2 border-ink bg-card"
           style={{ borderRadius: 24, padding: 24 }}
         >
           <div className="flex items-center justify-between mb-5">
