@@ -1,8 +1,76 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { AppIconX } from "./Icons";
+import { AppIconX, AppIconInstagram, AppIconTikTok } from "./Icons";
 import Avatar from "./Avatar";
 
+const followers = [
+  {
+    avatar: "/avatars/elon.png",
+    name: "Elon M.",
+    handle: "followed you",
+    icon: <AppIconX size={15} />,
+    tags: [
+      { label: "142M", color: "bg-lime" },
+      { label: "Top 0.01%", color: "bg-blue" },
+      { label: "Tech", color: "bg-apricot" },
+    ],
+  },
+  {
+    avatar: "/avatars/emma.png",
+    name: "Emma C.",
+    handle: "followed you",
+    icon: <AppIconInstagram size={15} />,
+    tags: [
+      { label: "2.4M", color: "bg-lime" },
+      { label: "Creator", color: "bg-blue" },
+      { label: "Lifestyle", color: "bg-apricot" },
+    ],
+  },
+  {
+    avatar: "/avatars/james.png",
+    name: "James M.",
+    handle: "followed you",
+    icon: <AppIconX size={15} />,
+    tags: [
+      { label: "890K", color: "bg-lime" },
+      { label: "Founder", color: "bg-blue" },
+      { label: "SaaS", color: "bg-apricot" },
+    ],
+  },
+  {
+    avatar: "/avatars/priya.png",
+    name: "Priya S.",
+    handle: "followed you",
+    icon: <AppIconTikTok size={15} />,
+    tags: [
+      { label: "310K", color: "bg-lime" },
+      { label: "Viral", color: "bg-blue" },
+      { label: "Design", color: "bg-apricot" },
+    ],
+  },
+];
+
 export default function DailyReportCard() {
+  const [idx, setIdx] = useState(0);
+  const [fading, setFading] = useState(false);
+  const [count, setCount] = useState(11);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFading(true);
+      setTimeout(() => {
+        setIdx((prev) => (prev + 1) % followers.length);
+        setCount((c) => c + 1);
+        setFading(false);
+      }, 250);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const f = followers[idx];
+
   return (
     <div
       className="border-[3px] border-ink bg-card shadow-[0_12px_48px_rgba(0,0,0,0.12)]"
@@ -26,43 +94,40 @@ export default function DailyReportCard() {
         <span className="text-xs text-muted ml-auto">Today</span>
       </div>
 
-      {/* Featured follower */}
-      <div className="px-5 pt-4 pb-3">
+      {/* Follower -- animated swap */}
+      <div
+        className="px-5 pt-4 pb-3 transition-all duration-250"
+        style={{
+          opacity: fading ? 0 : 1,
+          transform: fading ? "translateY(-6px)" : "translateY(0)",
+          filter: fading ? "blur(4px)" : "blur(0px)",
+        }}
+      >
         <div className="flex items-start gap-3">
-          <Avatar src="/avatars/elon.png" alt="Elon M." size={44} />
+          <Avatar src={f.avatar} alt={f.name} size={44} />
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
-              <span className="text-base font-bold text-ink">Elon M.</span>
-              <AppIconX size={15} />
+              <span className="text-base font-bold text-ink">{f.name}</span>
+              {f.icon}
             </div>
-            <p className="text-xs text-muted mt-0.5">followed you 2 min ago</p>
+            <p className="text-xs text-muted mt-0.5">{f.handle}</p>
 
-            {/* Context tags */}
             <div className="flex flex-wrap gap-1.5 mt-2.5">
-              <span
-                className="text-[11px] font-bold text-ink bg-lime px-2.5 py-0.5 border-[2px] border-ink"
-                style={{ borderRadius: "var(--radius-sm)" }}
-              >
-                142M followers
-              </span>
-              <span
-                className="text-[11px] font-bold text-ink bg-blue px-2.5 py-0.5 border-[2px] border-ink"
-                style={{ borderRadius: "var(--radius-sm)" }}
-              >
-                Top 0.01%
-              </span>
-              <span
-                className="text-[11px] font-bold text-ink bg-apricot px-2.5 py-0.5 border-[2px] border-ink"
-                style={{ borderRadius: "var(--radius-sm)" }}
-              >
-                Tech
-              </span>
+              {f.tags.map((t) => (
+                <span
+                  key={t.label}
+                  className={`text-[11px] font-bold text-ink ${t.color} px-2.5 py-0.5 border-[2px] border-ink`}
+                  style={{ borderRadius: "var(--radius-sm)" }}
+                >
+                  {t.label}
+                </span>
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Insights strip */}
+      {/* Insight strip */}
       <div className="mx-5 mb-4">
         <div
           className="bg-cream border-[2px] border-ink/10 px-4 py-3 flex items-center gap-3"
@@ -84,13 +149,13 @@ export default function DailyReportCard() {
         </div>
       </div>
 
-      {/* Footer */}
+      {/* Footer with live count */}
       <div
         className="px-5 py-2.5 border-t-[3px] border-ink bg-cream/50 text-center"
         style={{ borderRadius: "0 0 25px 25px" }}
       >
         <p className="text-xs font-bold text-muted">
-          +11 new today &middot; 4 notable
+          +<span className="tabular-nums">{count}</span> new today &middot; 4 notable
         </p>
       </div>
     </div>

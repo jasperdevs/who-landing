@@ -26,12 +26,11 @@ export default function QuestionWall() {
             </p>
           </div>
 
-          {/* Bento grid -- varied sizes */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
 
-            {/* Large card -- who noticed you? with mock preview */}
+            {/* Large -- who noticed you? */}
             <div
-              className="col-span-2 md:col-span-2 border-[3px] border-ink bg-blue p-6 md:p-7 card-hover"
+              className="col-span-2 border-[3px] border-ink bg-blue p-6 md:p-7 card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <div className="flex items-start justify-between gap-4 mb-5">
@@ -48,7 +47,6 @@ export default function QuestionWall() {
                   <IconSearch className="w-5 h-5 text-ink" />
                 </div>
               </div>
-              {/* Mini preview */}
               <div className="flex gap-2">
                 <div className="flex -space-x-3">
                   <Avatar src="/avatars/sara.png" alt="Sara" size={34} />
@@ -64,7 +62,7 @@ export default function QuestionWall() {
               </div>
             </div>
 
-            {/* Tall card -- who matters? */}
+            {/* Tall -- who matters? */}
             <div
               className="col-span-2 md:col-span-1 md:row-span-2 border-[3px] border-ink bg-lime p-6 md:p-7 flex flex-col justify-between card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
@@ -88,7 +86,7 @@ export default function QuestionWall() {
               </div>
             </div>
 
-            {/* Small card -- who just followed? */}
+            {/* Small -- who just followed? */}
             <div
               className="border-[3px] border-ink bg-card p-5 flex flex-col justify-between min-h-[120px] card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
@@ -107,7 +105,7 @@ export default function QuestionWall() {
               </h3>
             </div>
 
-            {/* Small card -- who unfollowed? */}
+            {/* Small -- who unfollowed? */}
             <div
               className="border-[3px] border-ink bg-apricot p-5 flex flex-col justify-between min-h-[120px] card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
@@ -126,9 +124,9 @@ export default function QuestionWall() {
               </h3>
             </div>
 
-            {/* Wide card -- who has 1M followers? with mock stat */}
+            {/* Wide -- who has 1M+ followers? */}
             <div
-              className="col-span-2 md:col-span-2 border-[3px] border-ink bg-card p-6 md:p-7 flex items-center justify-between gap-4 card-hover"
+              className="col-span-2 border-[3px] border-ink bg-card p-6 md:p-7 flex items-center justify-between gap-4 card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <div>
@@ -154,6 +152,25 @@ export default function QuestionWall() {
                   <IconTrendingUp className="w-5 h-5 text-ink" />
                 </div>
               </div>
+            </div>
+
+            {/* Bottom right -- who's a founder? (fills the gap) */}
+            <div
+              className="border-[3px] border-ink bg-card p-5 flex flex-col justify-between min-h-[120px] card-hover"
+              style={{ borderRadius: "var(--radius-xl)" }}
+            >
+              <div
+                className="w-10 h-10 border-[3px] border-ink bg-cream flex items-center justify-center"
+                style={{ borderRadius: "var(--radius-sm)" }}
+              >
+                <IconUser className="w-4 h-4 text-ink" />
+              </div>
+              <h3
+                className="text-lg font-bold text-ink leading-snug tracking-tight mt-3"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                who&apos;s a founder?
+              </h3>
             </div>
 
           </div>

@@ -1,5 +1,53 @@
+"use client";
+
 import AnimateIn from "./AnimateIn";
-import { AppIconX, AppIconInstagram, AppIconTikTok } from "./Icons";
+import {
+  AppIconX,
+  AppIconInstagram,
+  AppIconTikTok,
+  AppIconBluesky,
+  AppIconLinkedIn,
+  AppIconThreads,
+} from "./Icons";
+
+const icons = [
+  AppIconX, AppIconInstagram, AppIconTikTok,
+  AppIconThreads, AppIconBluesky, AppIconLinkedIn,
+  AppIconX, AppIconInstagram, AppIconTikTok,
+  AppIconThreads, AppIconBluesky, AppIconLinkedIn,
+];
+
+function SpinningIcons() {
+  return (
+    <div className="relative overflow-hidden mb-4" style={{ height: 40 }}>
+      {/* Fade edges */}
+      <div
+        className="absolute inset-y-0 left-0 w-10 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to right, var(--color-blue), transparent)" }}
+      />
+      <div
+        className="absolute inset-y-0 right-0 w-10 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to left, var(--color-blue), transparent)" }}
+      />
+      <style>{`
+        @keyframes icon-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
+      <div
+        className="flex items-center gap-3 whitespace-nowrap"
+        style={{ animation: "icon-scroll 8s linear infinite" }}
+      >
+        {icons.map((Icon, i) => (
+          <div key={i} className="shrink-0">
+            <Icon size={36} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function HowItWorks() {
   return (
@@ -16,16 +64,12 @@ export default function HowItWorks() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Step 1 */}
+            {/* Step 1 -- with spinning icons */}
             <div
-              className="border-[3px] border-ink bg-blue p-6 flex flex-col card-hover"
+              className="border-[3px] border-ink bg-blue p-6 flex flex-col card-hover overflow-hidden"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
-              <div className="flex items-center gap-2 mb-4">
-                <AppIconX size={24} />
-                <AppIconInstagram size={24} />
-                <AppIconTikTok size={24} />
-              </div>
+              <SpinningIcons />
               <h3
                 className="text-2xl font-bold text-ink tracking-tight"
                 style={{ fontFamily: "var(--font-display)" }}

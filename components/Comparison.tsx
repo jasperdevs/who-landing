@@ -8,13 +8,19 @@ import AnimateIn from "./AnimateIn";
 function LiveCounter() {
   const [count, setCount] = useState(142);
   useEffect(() => {
+    // 12 notifications per 5s loop = ~417ms per notification
     const interval = setInterval(() => {
       setCount((c) => c + 1);
-    }, 800 + Math.random() * 1200);
+    }, 417);
     return () => clearInterval(interval);
   }, []);
   return (
-    <span className="text-xs font-bold text-muted tabular-nums">{count}</span>
+    <span
+      className="text-xs font-bold text-ink bg-cream px-2.5 py-1 border-[2px] border-ink tabular-nums"
+      style={{ borderRadius: "var(--radius-sm)" }}
+    >
+      {count}
+    </span>
   );
 }
 
