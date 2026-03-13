@@ -1,10 +1,11 @@
-import HeroRibbon from "./HeroRibbon";
+import HeroVisual from "./HeroVisual";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="px-6 pt-14 md:pt-28 pb-0">
-        <div className="mx-auto max-w-4xl text-center">
+    <section className="px-6 pt-14 md:pt-28 pb-20 md:pb-32">
+      <div className="mx-auto max-w-4xl">
+        {/* Headline + subtitle */}
+        <div className="text-center mb-16 md:mb-20">
           <h1
             className="text-[3.5rem] md:text-[5.5rem] tracking-tight leading-[1.05] opacity-0 animate-fade-in-up"
             style={{ animationDelay: "0ms", fontFamily: "var(--font-display)" }}
@@ -42,14 +43,14 @@ export default function Hero() {
             </a>
           </div>
         </div>
-      </div>
 
-      {/* Ribbon visual below hero text */}
-      <div
-        className="opacity-0 animate-fade-in"
-        style={{ animationDelay: "500ms" }}
-      >
-        <HeroRibbon />
+        {/* Visual: icons left → report right */}
+        <div
+          className="opacity-0 animate-fade-in-up"
+          style={{ animationDelay: "400ms" }}
+        >
+          <HeroVisual />
+        </div>
       </div>
     </section>
   );
