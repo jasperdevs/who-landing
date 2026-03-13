@@ -1,5 +1,4 @@
 import Image from "next/image";
-import MagneticButton from "./MagneticButton";
 
 const links = [
   { label: "Features", href: "#features" },
@@ -37,17 +36,16 @@ export default function Footer() {
           </div>
 
           {/* Nav links */}
-          <div className="flex items-center gap-4 flex-wrap">
+          <div className="flex items-center gap-3 flex-wrap">
             {links.map((l) => (
-              <MagneticButton
+              <a
                 key={l.label}
                 href={l.href}
-                className="text-sm font-bold text-ink bg-cream px-4 py-2 border-[2px] border-ink"
+                className="btn-hover text-sm font-bold text-ink bg-cream px-4 py-2 border-[2px] border-ink"
                 style={{ borderRadius: "var(--radius-sm)" }}
-                strength={0.2}
               >
                 {l.label}
-              </MagneticButton>
+              </a>
             ))}
           </div>
         </div>

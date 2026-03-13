@@ -16,9 +16,10 @@ export default function Cta() {
     <section id="waitlist" className="px-5 py-10 md:py-14">
       <div className="mx-auto max-w-3xl">
         <div
-          className="border-[3px] border-ink bg-lime p-10 md:p-14 text-center"
+          className="border-[3px] border-ink bg-lime p-8 md:p-12 text-center relative overflow-hidden"
           style={{ borderRadius: "var(--radius-xl)" }}
         >
+          {/* Headline */}
           <h2
             className="text-4xl md:text-5xl font-bold tracking-tight text-ink leading-tight"
             style={{ fontFamily: "var(--font-display)" }}
@@ -26,10 +27,20 @@ export default function Cta() {
             Don&apos;t miss who&apos;s watching.
           </h2>
 
-          <p className="mt-3 text-lg text-ink/60 max-w-sm mx-auto leading-relaxed">
-            Be the first to get your daily report.
-          </p>
+          {/* What you get */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 mt-5">
+            {["Daily signal report", "Notable follower alerts", "Cross-platform"].map((item) => (
+              <span
+                key={item}
+                className="text-sm font-bold text-ink bg-cream/70 px-3.5 py-1.5 border-[2px] border-ink"
+                style={{ borderRadius: "var(--radius-sm)" }}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
 
+          {/* Form */}
           <div className="mt-8 flex justify-center">
             {!submitted ? (
               <form
@@ -73,6 +84,10 @@ export default function Cta() {
               </div>
             )}
           </div>
+
+          <p className="mt-4 text-sm text-ink/40">
+            Free early access. No credit card required.
+          </p>
         </div>
       </div>
     </section>

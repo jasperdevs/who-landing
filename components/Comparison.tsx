@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { AppIconX, AppIconInstagram, AppIconTikTok, IconBell } from "./Icons";
 import Avatar from "./Avatar";
 import AnimateIn from "./AnimateIn";
+import NoiseText from "./NoiseText";
 
 /* ── Stock-ticker counter ── */
 
@@ -94,15 +95,13 @@ const signal = [
   { avatar: "/avatars/priya.png", name: "Priya S.", followers: "310K", icon: <AppIconTikTok size={26} /> },
 ];
 
-/* ── Notification with slide-in-from-left per bubble ── */
-
-function NotificationBubble({ handle, avatar, index }: { handle: string; avatar: string; index: number }) {
+function NotificationBubble({ handle, avatar, delay }: { handle: string; avatar: string; delay: number }) {
   return (
     <div
-      className="mx-4 mb-2.5 bg-cream/80 border border-ink/8 px-4 py-3 flex items-center gap-3 notif-slide"
+      className="mx-4 mb-2.5 bg-cream/80 border border-ink/8 px-4 py-3 flex items-center gap-3"
       style={{
         borderRadius: "var(--radius-md)",
-        animationDelay: `${index * 0.12}s`,
+        animation: `notif-slide-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s both`,
       }}
     >
       <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 bg-ink/5">
@@ -127,7 +126,7 @@ export default function Comparison() {
               className="text-4xl md:text-5xl font-bold tracking-tight text-ink"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              <span className="noise-text">Noise</span> vs. Signal.
+              <NoiseText text="Noise" /> vs. Signal.
             </h2>
             <p className="mt-3 text-lg text-muted max-w-sm mx-auto leading-relaxed">
               Your notifications are useless. Who? makes them meaningful.
@@ -164,10 +163,10 @@ export default function Comparison() {
                 `}</style>
                 <div className="pt-2" style={{ animation: "noise-scroll 5s linear infinite" }}>
                   {noiseItems.map((n, i) => (
-                    <NotificationBubble key={`a-${i}`} handle={n.handle} avatar={n.avatar} index={i} />
+                    <NotificationBubble key={`a-${i}`} handle={n.handle} avatar={n.avatar} delay={i * 0.08} />
                   ))}
                   {noiseItems.map((n, i) => (
-                    <NotificationBubble key={`b-${i}`} handle={n.handle} avatar={n.avatar} index={i + noiseItems.length} />
+                    <NotificationBubble key={`b-${i}`} handle={n.handle} avatar={n.avatar} delay={0} />
                   ))}
                 </div>
                 <div

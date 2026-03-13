@@ -26,17 +26,14 @@ function IconStrip() {
 
 function SpinningIcons() {
   return (
-    <div
-      className="relative overflow-hidden mb-4 -mx-6"
-      style={{ height: 46, perspective: "400px" }}
-    >
+    <div className="relative overflow-hidden mb-5 -mx-6" style={{ height: 44 }}>
       <div
-        className="absolute inset-y-0 left-0 w-16 z-10 pointer-events-none"
-        style={{ background: "linear-gradient(to right, var(--color-blue) 0%, var(--color-blue) 25%, transparent 100%)" }}
+        className="absolute inset-y-0 left-0 w-12 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to right, var(--color-blue) 0%, var(--color-blue) 30%, transparent 100%)" }}
       />
       <div
-        className="absolute inset-y-0 right-0 w-16 z-10 pointer-events-none"
-        style={{ background: "linear-gradient(to left, var(--color-blue) 0%, var(--color-blue) 25%, transparent 100%)" }}
+        className="absolute inset-y-0 right-0 w-12 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to left, var(--color-blue) 0%, var(--color-blue) 30%, transparent 100%)" }}
       />
       <style>{`
         @keyframes marquee-scroll {
@@ -46,11 +43,7 @@ function SpinningIcons() {
       `}</style>
       <div
         className="flex items-center w-max"
-        style={{
-          animation: "marquee-scroll 6s linear infinite",
-          transform: "rotateX(8deg)",
-          transformStyle: "preserve-3d",
-        }}
+        style={{ animation: "marquee-scroll 5s linear infinite" }}
       >
         <IconStrip />
         <IconStrip />
@@ -74,11 +67,12 @@ export default function HowItWorks() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Step 1 -- with spinning icons */}
+            {/* Step 1 */}
             <div
               className="border-[3px] border-ink bg-blue p-6 flex flex-col card-hover overflow-hidden"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
+
               <SpinningIcons />
               <h3
                 className="text-2xl font-bold text-ink tracking-tight"
@@ -96,8 +90,9 @@ export default function HowItWorks() {
               className="border-[3px] border-ink bg-lime p-6 flex flex-col card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
+
               <div
-                className="w-10 h-10 border-[3px] border-ink bg-cream flex items-center justify-center mb-4"
+                className="w-10 h-10 border-[3px] border-ink bg-cream flex items-center justify-center mb-5"
                 style={{ borderRadius: "var(--radius-sm)" }}
               >
                 <svg className="w-5 h-5 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -120,8 +115,9 @@ export default function HowItWorks() {
               className="border-[3px] border-ink bg-card p-6 flex flex-col card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
+
               <div
-                className="w-10 h-10 border-[3px] border-ink bg-apricot flex items-center justify-center mb-4"
+                className="w-10 h-10 border-[3px] border-ink bg-apricot flex items-center justify-center mb-5"
                 style={{ borderRadius: "var(--radius-sm)" }}
               >
                 <svg className="w-5 h-5 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

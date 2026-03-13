@@ -1,21 +1,20 @@
 import FloatingIcons from "./FloatingIcons";
 import DailyReportCard from "./DailyReportCard";
-import MagneticButton from "./MagneticButton";
 import TypeWriter from "./TypeWriter";
 
 export default function Hero() {
   return (
     <section className="relative px-5 pt-4 md:pt-8 pb-6 md:pb-10 overflow-hidden">
-      {/* Canvas full width of section */}
+      {/* Canvas full width */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <FloatingIcons />
       </div>
 
-      {/* Strong side fades -- wide and aggressive */}
-      <div className="absolute inset-y-0 left-0 w-[20%] pointer-events-none z-[5]"
+      {/* Massive side fades */}
+      <div className="absolute inset-y-0 left-0 w-[42%] pointer-events-none z-[5]"
         style={{ background: "linear-gradient(to right, var(--color-cream) 0%, var(--color-cream) 50%, rgba(246,238,219,0) 100%)" }}
       />
-      <div className="absolute inset-y-0 right-0 w-[20%] pointer-events-none z-[5]"
+      <div className="absolute inset-y-0 right-0 w-[42%] pointer-events-none z-[5]"
         style={{ background: "linear-gradient(to left, var(--color-cream) 0%, var(--color-cream) 50%, rgba(246,238,219,0) 100%)" }}
       />
       <div className="absolute inset-x-0 bottom-0 h-20 pointer-events-none z-[5]"
@@ -64,13 +63,13 @@ export default function Hero() {
 
         {/* CTA */}
         <div className="flex justify-center opacity-0 animate-fade-in-up" style={{ animationDelay: "300ms" }}>
-          <MagneticButton
+          <a
             href="#waitlist"
-            className="inline-flex items-center px-8 py-4 text-lg font-bold bg-ink text-cream border-[3px] border-ink"
+            className="btn-hover-dark inline-flex items-center px-8 py-4 text-lg font-bold bg-ink text-cream border-[3px] border-ink"
             style={{ borderRadius: "var(--radius-md)" }}
           >
             Get your daily report
-          </MagneticButton>
+          </a>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Figtree } from "next/font/google";
+import GrainOverlay from "@/components/GrainOverlay";
 import "./globals.css";
 
 const figtree = Figtree({
@@ -47,6 +48,7 @@ export default function RootLayout({
         style={{ fontFamily: "var(--font-body)" }}
       >
         {children}
+        <GrainOverlay />
         {/* Bottom fade */}
         <div
           className="fixed inset-x-0 bottom-0 h-16 pointer-events-none z-50"

@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Colors ── */
   --color-cream: #f6eedb;
   --color-card: #fff8ea;
   --color-ink: #121212;
@@ -10,7 +9,6 @@
   --color-apricot: #ffc38a;
   --color-muted: #746d61;
 
-  /* ── Border radius ── */
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 24px;
@@ -25,21 +23,9 @@
 body {
   background-color: var(--color-cream);
   color: var(--color-ink);
-  position: relative;
 }
 
-/* Paper grain overlay on body via pseudo-element */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0.08;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 200px 200px;
-}
+/* Paper grain rendered via GrainOverlay canvas component */
 
 ::selection {
   background-color: var(--color-blue);
@@ -81,40 +67,41 @@ body::before {
 
 /* ── Micro-interactions ── */
 
-.card-hover {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+/* ── Neo-brutalist hover shadow ── */
+
+.card-hover, .btn-hover {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .card-hover:hover {
-  transform: scale(1.02);
+  transform: translate(-2px, -3px);
+  box-shadow: 4px 5px 0px 0px var(--color-ink);
+}
+.btn-hover:hover {
+  transform: translate(-2px, -3px);
+  box-shadow: 4px 5px 0px 0px var(--color-ink);
+}
+/* Dark buttons get a colored shadow instead */
+.btn-hover-dark {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-hover-dark:hover {
+  transform: translate(-2px, -3px);
+  box-shadow: 4px 5px 0px 0px var(--color-lime);
 }
 
-/* ── Noise text jitter + background noise ── */
-
-@keyframes text-noise {
-  0% { transform: translate(0, 0) skewX(0deg); }
-  10% { transform: translate(-1px, 1px) skewX(-0.5deg); }
-  20% { transform: translate(1px, -1px) skewX(0.5deg); }
-  30% { transform: translate(-1px, 0px) skewX(-0.3deg); }
-  40% { transform: translate(1px, 1px) skewX(0.3deg); }
-  50% { transform: translate(0px, -1px) skewX(-0.5deg); }
-  60% { transform: translate(-1px, 1px) skewX(0.5deg); }
-  70% { transform: translate(1px, 0px) skewX(-0.3deg); }
-  80% { transform: translate(0px, 1px) skewX(0.3deg); }
-  90% { transform: translate(-1px, -1px) skewX(-0.5deg); }
-  100% { transform: translate(0, 0) skewX(0deg); }
-}
+/* ── Noise text with grain background ── */
 
 @keyframes noise-bg-pulse {
-  0% { opacity: 0; }
-  15% { opacity: 0.12; }
-  30% { opacity: 0; }
-  100% { opacity: 0; }
+  0%, 100% { opacity: 0; }
+  15% { opacity: 0.15; }
+  30% { opacity: 0.05; }
+  50% { opacity: 0.12; }
+  70% { opacity: 0.03; }
 }
 
 .noise-text {
   display: inline-block;
   position: relative;
-  animation: text-noise 0.3s steps(5) infinite;
   text-decoration: line-through;
   text-decoration-color: rgba(18, 18, 18, 0.3);
 }
@@ -122,11 +109,11 @@ body::before {
 .noise-text::before {
   content: "";
   position: absolute;
-  inset: -8px -12px;
+  inset: -6px -10px;
   border-radius: var(--radius-sm);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 100px 100px;
-  animation: noise-bg-pulse 2s ease-in-out infinite;
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEUAAACAAAAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAFXZmEIAAAAGnRSTlMACBMQHyolNDEvQkc8V0xhXHBmd4J3jIeSnVPMr/oAAAGNSURBVHja1dTRcoMgEAXQBUQFNBr+/0NLd4GEZJrMtJ2+MOowHnYROKf2L09S93vJ+8et+/t4Tu7wfB5PnA/H/XD+Ope3kw4Xz3l3Pu7dO6crxx6v/fudDjc7s7t/Oit696l49GdOx+PPh/P+37frY+bv+7dKSVlPpRjmfd975f1+e7T6biV8zjnbp1LZ8l5fvZ5PhzO++V48Mfj8ejDJR9v3ue7v/b7/Jzz7U6+P4enJKUEIQQJIUlKJZVBGINRKq21UgrDMFprrRI0hGGYLMuyqqqmaZqmaVt06Lqu7/u+7/shDMMYx3EcxykaY0zGmBhjijHlnFPOKedcSi6l+FLKUkopiYiIvKjqm4iIiLy86RsRkVJaa621Nto4Y4wxxtjG2v+01444l1zyvJSSS84555xLzqXkXEouueSSSymllFJKKaWUWkqttdZaq621tdbW2lpr/8pa6+ustdbW2lqb1tpaa22ttfYf21pra22tjTHG2Bjjv3b99Q+Hf3+8egB5L3JAR084egAAAABJRU5ErkJggg==");
+  background-repeat: repeat;
+  animation: noise-bg-pulse 3s ease-in-out infinite;
   pointer-events: none;
   z-index: -1;
 }
@@ -148,7 +135,6 @@ body::before {
   background: var(--color-ink);
 }
 
-/* Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--color-muted) var(--color-cream);
