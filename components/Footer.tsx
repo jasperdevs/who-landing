@@ -32,7 +32,7 @@ export default function Footer() {
               >
                 Who?
               </span>
-              <p className="text-xs text-muted mt-0.5">Social intelligence for creators.</p>
+              <p className="text-xs text-muted mt-0.5">Know who follows you.</p>
             </div>
           </div>
 

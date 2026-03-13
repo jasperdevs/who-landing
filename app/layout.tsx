@@ -16,7 +16,7 @@ const garamond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Who? — Know who just followed you",
+  title: "Who?",
   description:
     "Who? turns follower noise into signal. See who noticed you and why they matter — across X, Instagram, TikTok, and more.",
   keywords: ["followers", "social media", "social intelligence", "X", "Instagram", "TikTok", "creator tools"],

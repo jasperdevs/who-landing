@@ -26,7 +26,10 @@ function IconStrip() {
 
 function SpinningIcons() {
   return (
-    <div className="relative overflow-hidden mb-4 -mx-6" style={{ height: 42 }}>
+    <div
+      className="relative overflow-hidden mb-4 -mx-6"
+      style={{ height: 46, perspective: "400px" }}
+    >
       <div
         className="absolute inset-y-0 left-0 w-16 z-10 pointer-events-none"
         style={{ background: "linear-gradient(to right, var(--color-blue) 0%, var(--color-blue) 25%, transparent 100%)" }}
@@ -41,10 +44,13 @@ function SpinningIcons() {
           100% { transform: translateX(-50%); }
         }
       `}</style>
-      {/* Two identical strips in one wrapper -- translate -50% = perfect loop */}
       <div
         className="flex items-center w-max"
-        style={{ animation: "marquee-scroll 6s linear infinite" }}
+        style={{
+          animation: "marquee-scroll 6s linear infinite",
+          transform: "rotateX(8deg)",
+          transformStyle: "preserve-3d",
+        }}
       >
         <IconStrip />
         <IconStrip />

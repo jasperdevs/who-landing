@@ -11,15 +11,15 @@ export default function Hero() {
         <FloatingIcons />
       </div>
 
-      {/* Edge fades */}
-      <div className="absolute inset-y-0 left-0 w-28 md:w-44 pointer-events-none z-[5]"
-        style={{ background: "linear-gradient(to right, var(--color-cream) 0%, var(--color-cream) 30%, transparent 100%)" }}
+      {/* Edge fades -- smooth multi-stop gradients */}
+      <div className="absolute inset-y-0 left-0 w-32 md:w-48 pointer-events-none z-[5]"
+        style={{ background: "linear-gradient(to right, var(--color-cream) 0%, rgba(246,238,219,0.8) 40%, rgba(246,238,219,0) 100%)" }}
       />
-      <div className="absolute inset-y-0 right-0 w-28 md:w-44 pointer-events-none z-[5]"
-        style={{ background: "linear-gradient(to left, var(--color-cream) 0%, var(--color-cream) 30%, transparent 100%)" }}
+      <div className="absolute inset-y-0 right-0 w-32 md:w-48 pointer-events-none z-[5]"
+        style={{ background: "linear-gradient(to left, var(--color-cream) 0%, rgba(246,238,219,0.8) 40%, rgba(246,238,219,0) 100%)" }}
       />
-      <div className="absolute inset-x-0 bottom-0 h-14 pointer-events-none z-[5]"
-        style={{ background: "linear-gradient(to top, var(--color-cream), transparent)" }}
+      <div className="absolute inset-x-0 bottom-0 h-16 pointer-events-none z-[5]"
+        style={{ background: "linear-gradient(to top, var(--color-cream) 0%, rgba(246,238,219,0.5) 40%, rgba(246,238,219,0) 100%)" }}
       />
 
       <div className="relative z-10 mx-auto max-w-3xl">

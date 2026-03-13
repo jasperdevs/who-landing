@@ -28,23 +28,32 @@ interface Particle {
 
 const PARTICLE_COUNT = 24;
 
+/** Round-robin icon index to ensure diversity */
+let nextIconIdx = 0;
+function getNextIcon(): number {
+  const idx = nextIconIdx % ICON_SRCS.length;
+  nextIconIdx++;
+  return idx;
+}
+
 function createParticle(w: number, h: number, cx: number, cy: number): Particle {
-  const pad = 50;
+  // Balanced left/right spawn
   const fromLeft = Math.random() < 0.5;
+  const pad = 50;
   const x = fromLeft ? -pad : w + pad;
   const y = h * (0.1 + Math.random() * 0.8);
 
   const dx = cx - x;
   const dy = cy - y;
   const d = Math.sqrt(dx * dx + dy * dy);
-  const speed = 0.35 + Math.random() * 0.2;
+  const speed = 0.5 + Math.random() * 0.3;
 
   return {
     x, y,
     vx: (dx / d) * speed,
     vy: (dy / d) * speed,
-    size: 28 + Math.random() * 10,
-    iconIdx: Math.floor(Math.random() * ICON_SRCS.length),
+    size: 28 + Math.random() * 8,
+    iconIdx: getNextIcon(),
     life: 0,
     maxLife: d / speed,
     startDist: d,
@@ -56,22 +65,25 @@ function createParticle(w: number, h: number, cx: number, cy: number): Particle 
 
 function seedParticles(w: number, h: number): Particle[] {
   const cx = w / 2;
-  const cy = h * 0.55;
-  const minDist = Math.min(w, h) * 0.12;
+  const cy = h * 0.6;
+  const minDist = Math.min(w, h) * 0.1;
   const particles: Particle[] = [];
+
+  // Reset round-robin
+  nextIconIdx = 0;
 
   for (let i = 0; i < PARTICLE_COUNT; i++) {
     const p = createParticle(w, h, cx, cy);
     const t = i / PARTICLE_COUNT;
-    const targetFrames = Math.floor(t * p.maxLife * 0.6);
+    const targetFrames = Math.floor(t * p.maxLife * 0.55);
 
     for (let f = 0; f < targetFrames; f++) {
       const dx = cx - p.x;
       const dy = cy - p.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < minDist) break;
-      const progress = Math.min(1 - dist / p.startDist, 0.9);
-      const accel = 1 + progress * progress * 2;
+      const progress = Math.min(1 - dist / p.startDist, 0.95);
+      const accel = 1 + progress * progress * 3;
       p.x += p.vx * accel;
       p.y += p.vy * accel;
       p.life = f + 1;
@@ -83,10 +95,13 @@ function seedParticles(w: number, h: number): Particle[] {
     const dot = dx * p.vx + dy * p.vy;
 
     if (dot < 0 || p.dist < minDist) {
+      // Overshot -- make a fresh one barely advanced
       const fresh = createParticle(w, h, cx, cy);
-      fresh.life = 3;
-      fresh.x += fresh.vx * 3;
-      fresh.y += fresh.vy * 3;
+      fresh.life = 5;
+      for (let f = 0; f < 5; f++) {
+        fresh.x += fresh.vx;
+        fresh.y += fresh.vy;
+      }
       fresh.dist = Math.sqrt((cx - fresh.x) ** 2 + (cy - fresh.y) ** 2);
       particles.push(fresh);
     } else {
@@ -152,7 +167,7 @@ export default function FloatingIcons() {
       tickRef.current++;
       const tick = tickRef.current;
       const cx = w / 2;
-      const cy = h * 0.55;
+      const cy = h * 0.6; // Target: center of DailyReportCard area
       ctx.clearRect(0, 0, w, h);
 
       if (!loadedRef.current) {
@@ -160,8 +175,8 @@ export default function FloatingIcons() {
         return;
       }
 
-      const absorb = Math.min(w, h) * 0.15;
-      const warpStart = Math.min(w, h) * 0.5;
+      const absorb = Math.min(w, h) * 0.12;
+      const warpStart = Math.min(w, h) * 0.45;
 
       // Update
       particlesRef.current.forEach((p, i) => {
@@ -170,8 +185,9 @@ export default function FloatingIcons() {
         const dy = cy - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         const progress = Math.min(Math.max(1 - dist / p.startDist, 0), 0.95);
-        const accel = 1 + progress * progress * 2;
 
+        // Faster acceleration = more instant vortex
+        const accel = 1 + progress * progress * 3;
         p.x += p.vx * accel;
         p.y += p.vy * accel;
 
@@ -180,11 +196,11 @@ export default function FloatingIcons() {
         p.dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
 
         const dot = dx2 * p.vx + dy2 * p.vy;
-        const fadeIn = Math.min(p.life / (p.maxLife * 0.12), 1);
+        const fadeIn = Math.min(p.life / (p.maxLife * 0.1), 1);
         const fadeOut = p.dist < absorb ? Math.pow(p.dist / absorb, 0.4) : 1;
         p.opacity = fadeIn * fadeOut * 0.8;
 
-        if (p.dist < absorb * 0.04 || p.life > p.maxLife || dot < 0) {
+        if (p.dist < absorb * 0.03 || p.life > p.maxLife || dot < 0) {
           particlesRef.current[i] = createParticle(w, h, cx, cy);
         }
       });
@@ -192,10 +208,10 @@ export default function FloatingIcons() {
       // Sort far first
       const sorted = [...particlesRef.current].sort((a, b) => b.dist - a.dist);
 
-      // Vortex glow at center
-      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, absorb * 1.8);
-      grad.addColorStop(0, "rgba(185,242,124,0.07)");
-      grad.addColorStop(0.5, "rgba(169,198,255,0.04)");
+      // Subtle vortex glow
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, absorb * 2);
+      grad.addColorStop(0, "rgba(185,242,124,0.06)");
+      grad.addColorStop(0.5, "rgba(169,198,255,0.03)");
       grad.addColorStop(1, "transparent");
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
@@ -205,26 +221,26 @@ export default function FloatingIcons() {
         const img = imagesRef.current[p.iconIdx];
         if (!img) return;
 
-        const shrink = p.dist < absorb ? 0.15 + 0.85 * (p.dist / absorb) : 1;
+        const shrink = p.dist < absorb ? 0.1 + 0.9 * (p.dist / absorb) : 1;
         const drawSize = p.size * shrink;
         if (drawSize < 2) return;
 
-        // Rumble: small oscillation that increases near center
-        const rumbleIntensity = p.dist < warpStart ? (1 - p.dist / warpStart) * 2.5 : 0;
+        // Rumble
+        const rumbleIntensity = p.dist < warpStart ? (1 - p.dist / warpStart) * 2 : 0;
         const rx = Math.sin(tick * 0.08 + p.rumbleOffset) * rumbleIntensity;
         const ry = Math.cos(tick * 0.1 + p.rumbleOffset * 1.3) * rumbleIntensity;
 
         const dx2 = cx - p.x;
         const dy2 = cy - p.y;
 
-        // Warp stretch toward center
+        // Warp
         let scaleX = 1;
         let scaleY = 1;
         let angle = 0;
 
         if (p.dist < warpStart) {
           const t = 1 - p.dist / warpStart;
-          const warp = t * t * t * 3.5;
+          const warp = t * t * t * 3;
           angle = Math.atan2(dy2, dx2);
           scaleX = 1 + warp;
           scaleY = Math.max(1 - warp * 0.55, 0.15);

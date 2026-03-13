@@ -71,6 +71,7 @@ function AnimatedCounter() {
       {curr.split("").map((d, i) => (
         <SlotDigit key={i} digit={d} prevDigit={prev[i] || "0"} />
       ))}
+      <span>+</span>
     </span>
   );
 }
@@ -128,7 +129,7 @@ export default function Comparison() {
               className="text-4xl md:text-5xl font-bold tracking-tight text-ink"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              Noise vs. Signal.
+              <span className="noise-text">Noise</span> vs. Signal.
             </h2>
             <p className="mt-3 text-lg text-muted max-w-sm mx-auto leading-relaxed">
               Your notifications are useless. Who? makes them meaningful.
