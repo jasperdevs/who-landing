@@ -27,13 +27,12 @@ interface Particle {
   side: number; // 0 = left, 1 = right
 }
 
-const PARTICLE_COUNT = 30;
+const PARTICLE_COUNT = 42;
 
 // Deterministic round-robin for icon diversity
 let spawnCounter = 0;
 
 function createParticle(w: number, h: number, cx: number, cy: number): Particle {
-  // Alternate sides strictly
   const side = spawnCounter % 2;
   const iconIdx = spawnCounter % ICON_SRCS.length;
   spawnCounter++;
@@ -41,16 +40,17 @@ function createParticle(w: number, h: number, cx: number, cy: number): Particle 
   const pad = 120;
   const x = side === 0 ? -pad : w + pad;
 
-  // Spawn at top or bottom third, not middle
-  const topOrBottom = (spawnCounter % 4) < 2;
-  const y = topOrBottom
-    ? h * (0.02 + Math.random() * 0.3)
-    : h * (0.7 + Math.random() * 0.28);
+  // Spawn across full height, biased toward top and bottom but no gaps
+  const third = spawnCounter % 3;
+  let y: number;
+  if (third === 0) y = h * (0.0 + Math.random() * 0.3);
+  else if (third === 1) y = h * (0.35 + Math.random() * 0.3);
+  else y = h * (0.7 + Math.random() * 0.3);
 
   const dx = cx - x;
   const dy = cy - y;
   const d = Math.sqrt(dx * dx + dy * dy);
-  const speed = 0.28 + Math.random() * 0.12;
+  const speed = 0.4 + Math.random() * 0.2;
 
   return {
     x, y,
@@ -176,7 +176,7 @@ export default function FloatingIcons() {
       }
 
       const absorb = Math.min(w, h) * 0.14;
-      const warpStart = Math.min(w, h) * 0.45;
+      const warpStart = Math.min(w, h) * 0.55;
 
       // Update
       particlesRef.current.forEach((p, i) => {
@@ -186,7 +186,7 @@ export default function FloatingIcons() {
         const dist = Math.sqrt(dx * dx + dy * dy);
         const progress = Math.min(Math.max(1 - dist / p.startDist, 0), 0.95);
 
-        const accel = 1 + progress * progress * 1.8;
+        const accel = 1 + progress * progress * 2.2;
         p.x += p.vx * accel;
         p.y += p.vy * accel;
 
@@ -195,19 +195,16 @@ export default function FloatingIcons() {
         p.dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
 
         const dot = dx2 * p.vx + dy2 * p.vy;
-        const fadeIn = Math.min(p.life / (p.maxLife * 0.12), 1);
+        const fadeIn = Math.min(p.life / (p.maxLife * 0.1), 1);
         const fadeOut = p.dist < absorb ? Math.pow(p.dist / absorb, 0.4) : 1;
-        p.opacity = fadeIn * fadeOut * 0.8;
+        p.opacity = fadeIn * fadeOut * 0.85;
 
         if (p.dist < absorb * 0.03 || p.life > p.maxLife || dot < 0) {
           particlesRef.current[i] = createParticle(w, h, cx, cy);
         }
       });
 
-      // Sort far first
       const sorted = [...particlesRef.current].sort((a, b) => b.dist - a.dist);
-
-      // No background fill -- keep canvas fully transparent
 
       sorted.forEach((p) => {
         if (p.life < 3 || p.opacity < 0.01) return;
@@ -218,30 +215,57 @@ export default function FloatingIcons() {
         const drawSize = p.size * shrink;
         if (drawSize < 2) return;
 
-        // Rumble near center
-        const rumbleIntensity = p.dist < warpStart ? (1 - p.dist / warpStart) * 1.5 : 0;
+        const rumbleIntensity = p.dist < warpStart ? (1 - p.dist / warpStart) * 2 : 0;
         const rx = Math.sin(tick * 0.06 + p.rumbleOffset) * rumbleIntensity;
         const ry = Math.cos(tick * 0.08 + p.rumbleOffset * 1.3) * rumbleIntensity;
 
         const dx2 = cx - p.x;
         const dy2 = cy - p.y;
 
-        // Warp stretch toward center
+        // Warp
         let scaleX = 1;
         let scaleY = 1;
         let angle = 0;
+        let warpT = 0;
 
         if (p.dist < warpStart) {
-          const t = 1 - p.dist / warpStart;
-          const warp = t * t * t * 2.5;
+          warpT = 1 - p.dist / warpStart;
+          const warp = warpT * warpT * 2;
           angle = Math.atan2(dy2, dx2);
           scaleX = 1 + warp;
-          scaleY = Math.max(1 - warp * 0.5, 0.2);
+          scaleY = Math.max(1 - warp * 0.45, 0.25);
         }
 
         const r = drawSize * 0.22;
         const half = drawSize / 2;
 
+        // Chromatic aberration ghost -- offset copy in blue tint near center
+        if (warpT > 0.15) {
+          const aberration = warpT * 4;
+          const ghostAngle = angle + Math.PI;
+          const gx = Math.cos(ghostAngle) * aberration;
+          const gy = Math.sin(ghostAngle) * aberration;
+
+          ctx.save();
+          ctx.globalAlpha = p.opacity * warpT * 0.4;
+          ctx.translate(p.x + rx + gx, p.y + ry + gy);
+          if (p.dist < warpStart) {
+            ctx.rotate(angle);
+            ctx.scale(scaleX * 1.05, scaleY * 1.05);
+            ctx.rotate(-angle);
+          }
+          ctx.beginPath();
+          ctx.roundRect(-half, -half, drawSize, drawSize, r);
+          ctx.clip();
+          ctx.drawImage(img, -half, -half, drawSize, drawSize);
+          // Blue tint overlay
+          ctx.globalCompositeOperation = "source-atop";
+          ctx.fillStyle = "rgba(169,198,255,0.5)";
+          ctx.fillRect(-half, -half, drawSize, drawSize);
+          ctx.restore();
+        }
+
+        // Main icon
         ctx.save();
         ctx.globalAlpha = p.opacity;
         ctx.translate(p.x + rx, p.y + ry);
@@ -252,11 +276,17 @@ export default function FloatingIcons() {
           ctx.rotate(-angle);
         }
 
+        // Brightness boost near center
+        if (warpT > 0.3) {
+          ctx.filter = `brightness(${1 + warpT * 0.6})`;
+        }
+
         ctx.beginPath();
         ctx.roundRect(-half, -half, drawSize, drawSize, r);
         ctx.clip();
         ctx.drawImage(img, -half, -half, drawSize, drawSize);
-        ctx.restore();
+
+        ctx.restore()
       });
 
       frameRef.current = requestAnimationFrame(draw);

@@ -38,8 +38,8 @@ export default function Navbar() {
           </a>
 
           <div className="hidden md:flex items-center gap-7">
-            <a href="#features" className="text-[15px] font-medium text-muted hover:text-ink transition-colors">Features</a>
-            <a href="#about" className="text-[15px] font-medium text-muted hover:text-ink transition-colors">About</a>
+            <a href="#features" className="text-[15px] font-medium text-muted hover:text-ink link-hover">Features</a>
+            <a href="#about" className="text-[15px] font-medium text-muted hover:text-ink link-hover">About</a>
             <a
               href="#waitlist"
               className="btn-hover-dark inline-flex items-center px-6 py-2.5 text-[15px] font-semibold bg-ink text-cream"

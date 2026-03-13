@@ -13,11 +13,10 @@ export default function NoiseText({ text }: { text: string }) {
       tick++;
       spanRefs.current.forEach((span, i) => {
         if (!span) return;
-        // Each letter jiggles on its own phase
         const phase = i * 1.7 + tick * 0.15;
-        const x = Math.sin(phase) * 1.5 + Math.sin(phase * 2.3) * 0.8;
-        const y = Math.cos(phase * 1.1) * 1.2 + Math.cos(phase * 0.7) * 0.6;
-        const rotate = Math.sin(phase * 0.9) * 2;
+        const x = Math.sin(phase) * 2 + Math.sin(phase * 2.3) * 1;
+        const y = Math.cos(phase * 1.1) * 1.5 + Math.cos(phase * 0.7) * 0.8;
+        const rotate = Math.sin(phase * 0.9) * 3;
         span.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`;
       });
       frame = requestAnimationFrame(animate);
@@ -28,20 +27,30 @@ export default function NoiseText({ text }: { text: string }) {
   }, []);
 
   return (
-    <span
-      className="inline-flex"
-      style={{ textDecoration: "line-through", textDecorationColor: "rgba(18,18,18,0.3)" }}
-    >
-      {text.split("").map((char, i) => (
+    <span className="relative inline-block">
+      {/* Static strikethrough behind */}
+      <span
+        className="absolute inset-0 flex items-center justify-center pointer-events-none"
+        aria-hidden="true"
+      >
         <span
-          key={i}
-          ref={(el) => { spanRefs.current[i] = el; }}
-          className="inline-block"
-          style={{ willChange: "transform" }}
-        >
-          {char}
-        </span>
-      ))}
+          className="block w-full border-t-[2px] border-ink/30"
+          style={{ marginTop: "2px" }}
+        />
+      </span>
+      {/* Jiggling letters on top */}
+      <span className="relative inline-flex">
+        {text.split("").map((char, i) => (
+          <span
+            key={i}
+            ref={(el) => { spanRefs.current[i] = el; }}
+            className="inline-block"
+            style={{ willChange: "transform" }}
+          >
+            {char}
+          </span>
+        ))}
+      </span>
     </span>
   );
 }
