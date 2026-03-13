@@ -6,11 +6,8 @@ import TypeWriter from "./TypeWriter";
 export default function Hero() {
   return (
     <section className="relative px-5 pt-4 md:pt-8 pb-6 md:pb-10 overflow-hidden">
-      {/* Canvas covers full width */}
-      <div
-        className="absolute pointer-events-none z-0"
-        style={{ top: 0, bottom: 0, left: "-10vw", right: "-10vw" }}
-      >
+      {/* Canvas covers section */}
+      <div className="absolute inset-0 pointer-events-none z-0">
         <FloatingIcons />
       </div>
 

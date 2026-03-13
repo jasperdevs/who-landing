@@ -57,12 +57,12 @@ export default function Footer() {
           <p className="text-xs text-muted">
             Built by{" "}
             <a
-              href="https://x.com/yourhandle"
+              href="https://x.com/napsdev"
               target="_blank"
               rel="noopener noreferrer"
               className="font-bold text-ink hover:opacity-70 transition-opacity"
             >
-              @yourhandle
+              @napsdev
             </a>
           </p>
           <p className="text-xs text-muted">

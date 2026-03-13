@@ -12,43 +12,42 @@ import {
 
 const iconSet = [AppIconX, AppIconInstagram, AppIconTikTok, AppIconThreads, AppIconBluesky, AppIconLinkedIn];
 
-function IconRow() {
+function IconStrip() {
   return (
-    <>
+    <div className="flex items-center shrink-0">
       {iconSet.map((Icon, i) => (
-        <div key={i} className="shrink-0 mx-2.5">
+        <div key={i} className="shrink-0 px-2">
           <Icon size={36} />
         </div>
       ))}
-    </>
+    </div>
   );
 }
 
 function SpinningIcons() {
   return (
-    <div className="relative overflow-hidden mb-4" style={{ height: 42 }}>
+    <div className="relative overflow-hidden mb-4 -mx-6" style={{ height: 42 }}>
       <div
-        className="absolute inset-y-0 left-0 w-14 z-10 pointer-events-none"
-        style={{ background: "linear-gradient(to right, var(--color-blue) 0%, var(--color-blue) 30%, transparent 100%)" }}
+        className="absolute inset-y-0 left-0 w-16 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to right, var(--color-blue) 0%, var(--color-blue) 25%, transparent 100%)" }}
       />
       <div
-        className="absolute inset-y-0 right-0 w-14 z-10 pointer-events-none"
-        style={{ background: "linear-gradient(to left, var(--color-blue) 0%, var(--color-blue) 30%, transparent 100%)" }}
+        className="absolute inset-y-0 right-0 w-16 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(to left, var(--color-blue) 0%, var(--color-blue) 25%, transparent 100%)" }}
       />
-      <div className="flex items-center">
-        <style>{`
-          @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-246px)); }
-          }
-        `}</style>
-        {/* 246px = 6 icons * (36px + 5px gap) */}
-        <div
-          className="flex items-center shrink-0"
-          style={{ animation: "marquee 2.5s linear infinite" }}
-        >
-          <IconRow /><IconRow /><IconRow /><IconRow />
-        </div>
+      <style>{`
+        @keyframes marquee-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
+      {/* Two identical strips in one wrapper -- translate -50% = perfect loop */}
+      <div
+        className="flex items-center w-max"
+        style={{ animation: "marquee-scroll 6s linear infinite" }}
+      >
+        <IconStrip />
+        <IconStrip />
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import MagneticButton from "./MagneticButton";
 
 export default function Cta() {
   const [email, setEmail] = useState("");
@@ -47,14 +46,13 @@ export default function Cta() {
                   className="flex-1 px-5 py-4 text-base text-ink bg-cream outline-none placeholder:text-muted/50 border-[3px] border-ink sm:border-0 sm:rounded-none"
                   style={{ borderRadius: "var(--radius-lg)", fontFamily: "var(--font-body)" }}
                 />
-                <MagneticButton
+                <button
                   type="submit"
-                  className="px-7 py-4 text-base font-bold bg-ink text-cream shrink-0 sm:!rounded-none"
+                  className="px-7 py-4 text-base font-bold bg-ink text-cream hover:opacity-90 transition-opacity shrink-0 sm:!rounded-none"
                   style={{ borderRadius: "var(--radius-lg)" }}
-                  strength={0.15}
                 >
                   Join waitlist
-                </MagneticButton>
+                </button>
               </form>
             ) : (
               <div

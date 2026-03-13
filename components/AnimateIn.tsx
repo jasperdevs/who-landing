@@ -15,6 +15,13 @@ export default function AnimateIn({ children, className = "" }: AnimateInProps) 
     const el = ref.current;
     if (!el) return;
 
+    // If already in viewport on mount, show immediately
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -22,7 +29,7 @@ export default function AnimateIn({ children, className = "" }: AnimateInProps) 
           observer.unobserve(el);
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.08 }
     );
 
     observer.observe(el);
