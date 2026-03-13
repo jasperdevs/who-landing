@@ -207,13 +207,7 @@ export default function FloatingIcons() {
       // Sort far first
       const sorted = [...particlesRef.current].sort((a, b) => b.dist - a.dist);
 
-      // Subtle vortex glow
-      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, absorb * 2);
-      grad.addColorStop(0, "rgba(185,242,124,0.06)");
-      grad.addColorStop(0.5, "rgba(169,198,255,0.03)");
-      grad.addColorStop(1, "transparent");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, w, h);
+      // No background fill -- keep canvas fully transparent
 
       sorted.forEach((p) => {
         if (p.life < 3 || p.opacity < 0.01) return;

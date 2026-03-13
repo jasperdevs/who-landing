@@ -4,7 +4,7 @@ import TypeWriter from "./TypeWriter";
 
 export default function Hero() {
   return (
-    <section className="relative px-5 pt-4 md:pt-8 pb-6 md:pb-10 overflow-hidden">
+    <section className="relative px-5 pt-8 md:pt-16 pb-10 md:pb-16 overflow-hidden">
       {/* Canvas full width */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <FloatingIcons />

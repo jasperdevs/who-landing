@@ -59,7 +59,7 @@ export default function Cta() {
                 />
                 <button
                   type="submit"
-                  className="px-7 py-4 text-base font-bold bg-ink text-cream hover:opacity-90 transition-opacity shrink-0 sm:!rounded-none"
+                  className="btn-hover-dark px-7 py-4 text-base font-bold bg-ink text-cream shrink-0 sm:!rounded-none"
                   style={{ borderRadius: "var(--radius-lg)" }}
                 >
                   Join waitlist

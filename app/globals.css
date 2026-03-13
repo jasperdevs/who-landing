@@ -25,7 +25,25 @@ body {
   color: var(--color-ink);
 }
 
-/* Paper grain rendered via GrainOverlay canvas component */
+/* Paper grain rendered via GrainOverlay SVG component */
+
+/* ── Notification card jitter ── */
+@keyframes notif-jitter {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(-0.5px, 0.5px) rotate(-0.3deg); }
+  20% { transform: translate(0.5px, -0.3px) rotate(0.2deg); }
+  30% { transform: translate(-0.3px, 0.3px) rotate(-0.2deg); }
+  40% { transform: translate(0.5px, 0.5px) rotate(0.3deg); }
+  50% { transform: translate(0, -0.5px) rotate(-0.2deg); }
+  60% { transform: translate(-0.5px, 0.3px) rotate(0.2deg); }
+  70% { transform: translate(0.3px, 0px) rotate(-0.3deg); }
+  80% { transform: translate(0, 0.3px) rotate(0.2deg); }
+  90% { transform: translate(-0.3px, -0.3px) rotate(-0.2deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+.notif-jitter {
+  animation: notif-jitter 0.4s steps(6) infinite;
+}
 
 ::selection {
   background-color: var(--color-blue);

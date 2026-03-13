@@ -98,10 +98,11 @@ const signal = [
 function NotificationBubble({ handle, avatar, delay }: { handle: string; avatar: string; delay: number }) {
   return (
     <div
-      className="mx-4 mb-2.5 bg-cream/80 border border-ink/8 px-4 py-3 flex items-center gap-3"
+      className="mx-4 mb-2.5 bg-cream/80 border border-ink/8 px-4 py-3 flex items-center gap-3 notif-jitter"
       style={{
         borderRadius: "var(--radius-md)",
-        animation: `notif-slide-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s both`,
+        animation: `notif-slide-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s both, notif-jitter 0.4s steps(6) infinite`,
+        animationDelay: `${delay}s, ${Math.random() * 0.5}s`,
       }}
     >
       <div className="w-8 h-8 rounded-full overflow-hidden shrink-0 bg-ink/5">
