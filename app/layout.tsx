@@ -16,9 +16,23 @@ const garamond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Who?",
+  title: "Who? — Know who just followed you",
   description:
-    "All your followers from every platform in one place. Know who noticed you.",
+    "Who? turns follower noise into signal. See who noticed you and why they matter — across X, Instagram, TikTok, and more.",
+  keywords: ["followers", "social media", "social intelligence", "X", "Instagram", "TikTok", "creator tools"],
+  openGraph: {
+    title: "Who? — Know who just followed you",
+    description:
+      "Who? turns follower noise into signal. See who noticed you and why they matter — across every platform.",
+    siteName: "Who?",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Who? — Know who just followed you",
+    description:
+      "Turn follower noise into signal. See who noticed you and why they matter.",
+  },
 };
 
 export default function RootLayout({
@@ -27,12 +41,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${figtree.variable} ${garamond.variable}`}>
+    <html lang="en" className={`${figtree.variable} ${garamond.variable} scroll-smooth`}>
       <body
-        className="min-h-screen antialiased"
+        className="relative min-h-screen antialiased"
         style={{ fontFamily: "var(--font-body)" }}
       >
         {children}
+        {/* Bottom fade */}
+        <div
+          className="fixed inset-x-0 bottom-0 h-16 pointer-events-none z-50"
+          style={{ background: "linear-gradient(to top, var(--color-cream), transparent)" }}
+        />
       </body>
     </html>
   );

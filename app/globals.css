@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* ── Colors ── */
   --color-cream: #f6eedb;
   --color-card: #fff8ea;
   --color-ink: #121212;
@@ -8,6 +9,12 @@
   --color-lime: #b9f27c;
   --color-apricot: #ffc38a;
   --color-muted: #746d61;
+
+  /* ── Border radius ── */
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 28px;
 }
 
 * {
@@ -18,6 +25,9 @@
 body {
   background-color: var(--color-cream);
   color: var(--color-ink);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
 }
 
 ::selection {
@@ -25,30 +35,52 @@ body {
   color: var(--color-ink);
 }
 
+/* ── Animations with blur ── */
+
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(20px); filter: blur(8px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0px); }
 }
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes scroll-noise {
-  to { transform: translateY(-50%); }
-}
-@keyframes scroll-icons {
-  to { transform: translateX(-50%); }
+  from { opacity: 0; filter: blur(6px); }
+  to { opacity: 1; filter: blur(0px); }
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .animate-fade-in {
   animation: fade-in 0.6s ease-out forwards;
 }
-.animate-scroll-noise {
-  animation: scroll-noise 6s linear infinite;
+
+/* ── Micro-interactions ── */
+
+.card-hover {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.animate-scroll-icons {
-  animation: scroll-icons 12s linear infinite;
+.card-hover:hover {
+  transform: scale(1.02);
+}
+
+/* ── Custom scrollbar ── */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border: 2px solid var(--color-cream);
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-muted) var(--color-cream);
 }

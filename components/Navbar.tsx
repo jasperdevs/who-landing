@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import MagneticButton from "./MagneticButton";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -16,17 +17,17 @@ export default function Navbar() {
         }}
       />
 
-      <div className="relative px-6 py-4">
+      <div className="relative px-5 py-4">
         <div
-          className="mx-auto max-w-4xl flex items-center justify-between h-14 px-6 border-2 border-ink bg-card"
-          style={{ borderRadius: 22 }}
+          className="mx-auto max-w-3xl flex items-center justify-between h-16 px-5 border-[3px] border-ink bg-card"
+          style={{ borderRadius: "var(--radius-lg)" }}
         >
-          <a href="#" className="flex items-center gap-2.5">
+          <a href="#" className="flex items-center gap-2">
             <Image
               src="/who-icon.png"
               alt="Who?"
-              width={30}
-              height={30}
+              width={34}
+              height={34}
               style={{ borderRadius: "22%" }}
             />
             <span
@@ -37,33 +38,43 @@ export default function Navbar() {
             </span>
           </a>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-7">
             <a href="#features" className="text-[15px] font-medium text-muted hover:text-ink transition-colors">Features</a>
             <a href="#about" className="text-[15px] font-medium text-muted hover:text-ink transition-colors">About</a>
-            <a
+            <MagneticButton
               href="#waitlist"
-              className="inline-flex items-center px-5 py-2 text-[15px] font-semibold bg-ink text-cream hover:opacity-90 transition-opacity"
-              style={{ borderRadius: 14 }}
+              className="inline-flex items-center px-6 py-2.5 text-[15px] font-semibold bg-ink text-cream"
+              style={{ borderRadius: "var(--radius-md)" }}
             >
-              Get early access
-            </a>
+              Join waitlist
+            </MagneticButton>
           </div>
 
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden w-10 h-10 border-2 border-ink flex items-center justify-center"
-            style={{ borderRadius: 12 }}
+            className="md:hidden w-11 h-11 border-[3px] border-ink flex items-center justify-center"
+            style={{ borderRadius: "var(--radius-sm)" }}
             aria-label="Menu"
           >
-            <span className="text-ink font-bold text-base leading-none">{open ? "\u00d7" : "\u2261"}</span>
+            <span className="text-ink font-bold text-lg leading-none">{open ? "\u00d7" : "\u2261"}</span>
           </button>
         </div>
 
         {open && (
-          <div className="md:hidden mt-2 mx-auto max-w-4xl border-2 border-ink bg-card p-5" style={{ borderRadius: 22 }}>
-            <a href="#features" onClick={() => setOpen(false)} className="block py-3 px-3 text-base font-medium text-muted hover:text-ink">Features</a>
-            <a href="#about" onClick={() => setOpen(false)} className="block py-3 px-3 text-base font-medium text-muted hover:text-ink">About</a>
-            <a href="#waitlist" onClick={() => setOpen(false)} className="block mt-3 text-center py-3 bg-ink text-cream text-base font-semibold" style={{ borderRadius: 14 }}>Get early access</a>
+          <div
+            className="md:hidden mt-2 mx-auto max-w-3xl border-[3px] border-ink bg-card p-5"
+            style={{ borderRadius: "var(--radius-lg)" }}
+          >
+            <a href="#features" onClick={() => setOpen(false)} className="block py-3 px-3 text-lg font-medium text-muted hover:text-ink">Features</a>
+            <a href="#about" onClick={() => setOpen(false)} className="block py-3 px-3 text-lg font-medium text-muted hover:text-ink">About</a>
+            <a
+              href="#waitlist"
+              onClick={() => setOpen(false)}
+              className="block mt-3 text-center py-3.5 bg-ink text-cream text-lg font-semibold"
+              style={{ borderRadius: "var(--radius-md)" }}
+            >
+              Join waitlist
+            </a>
           </div>
         )}
       </div>

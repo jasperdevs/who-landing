@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Comparison from "@/components/Comparison";
 import QuestionWall from "@/components/QuestionWall";
-import FollowMap from "@/components/FollowMap";
+import HowItWorks from "@/components/HowItWorks";
 import Cta from "@/components/Cta";
 import Footer from "@/components/Footer";
 
@@ -14,7 +14,7 @@ export default function Home() {
         <Hero />
         <Comparison />
         <QuestionWall />
-        <FollowMap />
+        <HowItWorks />
         <Cta />
       </main>
       <Footer />

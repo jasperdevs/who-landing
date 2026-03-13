@@ -11,7 +11,7 @@ export default function Avatar({
 }) {
   return (
     <div
-      className="shrink-0 bg-[#e8e1d0] border-2 border-ink rounded-full flex items-center justify-center overflow-hidden"
+      className="shrink-0 bg-[#e8e1d0] border-[3px] border-ink rounded-full flex items-center justify-center overflow-hidden"
       style={{ width: size, height: size }}
     >
       <Image
