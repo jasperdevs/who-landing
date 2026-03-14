@@ -3,64 +3,31 @@
 import AnimateIn from "./AnimateIn";
 
 const features = [
-  {
-    icon: "🔔", title: "Notable Follow Alerts",
-    desc: "Get notified when someone important follows you",
-    bg: "bg-yellow",
-  },
-  {
-    icon: "🔍", title: "Deep Profile Lookup",
-    desc: "Bios, follower counts, cross-platform presence",
-    bg: "bg-sky",
-  },
-  {
-    icon: "📊", title: "Daily Signal Report",
-    desc: "Every morning at 8am — your personalized follower intel",
-    bg: "bg-cream",
-  },
-  {
-    icon: "🌐", title: "Cross-Platform",
-    desc: "X, Instagram, TikTok, Threads, Bluesky, LinkedIn",
-    bg: "bg-blue text-white",
-  },
-  {
-    icon: "🛡️", title: "Privacy First",
-    desc: "Read-only access. Encrypted. Disconnect anytime",
-    bg: "bg-yellow",
-  },
+  { icon: "🔔", title: "Follow Alerts", desc: "Know when someone important follows you", bg: "bg-yellow" },
+  { icon: "🔍", title: "Profile Lookup", desc: "Bios, stats, cross-platform presence", bg: "bg-sky" },
+  { icon: "📊", title: "Daily Report", desc: "Every morning — your follower intel", bg: "bg-cream" },
+  { icon: "🌐", title: "Cross-Platform", desc: "X, IG, TikTok, Threads, Bluesky, LinkedIn", bg: "bg-blue", light: true },
+  { icon: "🛡️", title: "Privacy First", desc: "Read-only. Encrypted. Disconnect anytime", bg: "bg-yellow" },
+  { icon: "⚡", title: "Instant Setup", desc: "Connect all accounts in 30 seconds", bg: "bg-sky" },
 ];
 
 export default function Features() {
   return (
     <section id="features" className="bento bg-cream">
-      <div className="px-6 py-14 md:py-20">
+      <div className="px-6 py-12 md:py-16">
         <AnimateIn>
-          <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink uppercase tracking-tight text-center mb-12"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Your{" "}
-            <span className="pill-badge inline-block bg-yellow px-5 py-0.5">
-              Tools
-            </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink uppercase tracking-tight text-center mb-10" style={{ fontFamily: "var(--font-display)" }}>
+            Your <span className="pill-badge inline-block bg-yellow px-5 py-0.5">Tools</span>
           </h2>
         </AnimateIn>
 
-        {/* Bento grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {features.map((f, i) => (
-            <AnimateIn key={f.title} className={i === 3 ? "col-span-2 md:col-span-1" : ""}>
-              <div className={`bento p-5 md:p-6 h-full ${f.bg}`}>
+          {features.map((f) => (
+            <AnimateIn key={f.title}>
+              <div className={`bento-inner p-5 h-full ${f.bg} ${f.light ? "text-white" : "text-ink"}`}>
                 <span className="text-2xl mb-3 block">{f.icon}</span>
-                <h3
-                  className="text-sm md:text-base font-extrabold uppercase tracking-tight mb-1"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {f.title}
-                </h3>
-                <p className={`text-xs leading-relaxed ${f.bg.includes("blue") ? "text-white/60" : "text-ink/40"}`}>
-                  {f.desc}
-                </p>
+                <h3 className="text-sm font-extrabold uppercase tracking-tight mb-1" style={{ fontFamily: "var(--font-display)" }}>{f.title}</h3>
+                <p className={`text-xs leading-relaxed ${f.light ? "text-white/60" : "text-ink/40"}`}>{f.desc}</p>
               </div>
             </AnimateIn>
           ))}

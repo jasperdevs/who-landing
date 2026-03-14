@@ -16,11 +16,11 @@ export default function Comparison() {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
       {/* Noise */}
       <AnimateIn>
-        <div className="bento bg-white h-[360px] flex flex-col">
-          <div className="px-4 py-3 flex items-center justify-between">
+        <div className="bento bg-white h-[380px] flex flex-col">
+          <div className="px-4 py-3 border-b-2 border-ink flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span style={{ animation: "bell-ring 2s ease-in-out infinite", display: "inline-block" }}>🔔</span>
-              <span className="text-xs font-bold text-ink/40 uppercase" style={{ fontFamily: "var(--font-display)" }}>Notifications</span>
+              <span className="text-xs font-bold text-ink/50 uppercase" style={{ fontFamily: "var(--font-display)" }}>Notifications</span>
             </div>
             <AnimatedCounter />
           </div>
@@ -33,14 +33,14 @@ export default function Comparison() {
 
       {/* Signal */}
       <AnimateIn>
-        <div className="bento bg-yellow h-[360px] flex flex-col">
-          <div className="px-4 py-3">
+        <div className="bento bg-yellow h-[380px] flex flex-col">
+          <div className="px-4 py-3 border-b-2 border-ink">
             <span className="text-xs font-bold text-ink/60 uppercase" style={{ fontFamily: "var(--font-display)" }}>✨ Who? Report</span>
           </div>
           <div className="flex-1 px-3 pb-3 flex flex-col justify-center gap-2">
             {signals.map((s) => (
-              <div key={s.name} className="flex items-center gap-3 p-3 bg-cream rounded-2xl">
-                <div className="w-10 h-10 rounded-xl shrink-0 overflow-hidden">
+              <div key={s.name} className="bento-inner flex items-center gap-3 p-3 bg-cream">
+                <div className="w-10 h-10 rounded-xl border-2 border-ink shrink-0 overflow-hidden">
                   <Image src={s.src} alt={s.platform} width={40} height={40} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
