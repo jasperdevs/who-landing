@@ -61,24 +61,7 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Pixar-style question mark bounce + flip ── */
-@keyframes qmark-pixar {
-  0%, 70% { transform: translateY(0) scaleY(1) scaleX(1); }
-  74% { transform: translateY(2px) scaleY(0.85) scaleX(1.1); }
-  78% { transform: translateY(-12px) scaleY(1.15) scaleX(0.9); }
-  82% { transform: translateY(2px) scaleY(0.9) scaleX(1.05); }
-  85% { transform: translateY(-18px) scaleY(1.1) scaleX(0.95) rotate(180deg); }
-  88% { transform: translateY(-6px) scaleY(1) scaleX(1) rotate(180deg); }
-  91% { transform: translateY(3px) scaleY(0.85) scaleX(1.1) rotate(180deg); }
-  94% { transform: translateY(-4px) scaleY(1.05) scaleX(0.98) rotate(0deg); }
-  97% { transform: translateY(1px) scaleY(0.95) scaleX(1.02); }
-  100% { transform: translateY(0) scaleY(1) scaleX(1); }
-}
-.brand-qmark {
-  animation: qmark-pixar 3.5s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-  display: inline-block !important;
-  transform-origin: center bottom;
-}
+
 
 /* ── Notification slide-in ── */
 @keyframes notif-slide-in {

@@ -2,14 +2,13 @@ import FloatingIcons from "./FloatingIcons";
 import DailyReportCard from "./DailyReportCard";
 import TypeWriter from "./TypeWriter";
 import PhoneMockup from "./PhoneMockup";
-import CurveDrawer from "./CurveDrawer";
+
 import ConstantShimmer from "./ConstantShimmer";
 import HoverShimmer from "./HoverShimmer";
 
 export default function Hero() {
   return (
     <section className="relative px-5 pt-8 md:pt-20 pb-10 md:pb-16 overflow-x-clip">
-      <CurveDrawer />
       {/* Icons behind everything */}
       <div
         className="absolute pointer-events-none"

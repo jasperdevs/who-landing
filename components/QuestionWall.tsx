@@ -32,9 +32,9 @@ export default function QuestionWall() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 
           {/* Large — VC discovery */}
-          <AnimateIn>
+          <AnimateIn className="sm:col-span-2">
             <div
-              className="sm:col-span-2 border-[3px] border-ink bg-blue p-6 card-hover"
+              className="border-[3px] border-ink bg-blue p-6 card-hover h-full"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest mb-3">You would have missed</p>
@@ -56,19 +56,16 @@ export default function QuestionWall() {
             </div>
           </AnimateIn>
 
-          {/* Tall — creator you didn't know */}
-          <AnimateIn>
+          {/* Tall — creator */}
+          <AnimateIn className="sm:col-span-2 md:col-span-1 md:row-span-2">
             <div
-              className="sm:col-span-2 md:col-span-1 md:row-span-2 border-[3px] border-ink bg-lime p-6 flex flex-col justify-between card-hover"
+              className="border-[3px] border-ink bg-lime p-6 flex flex-col justify-between card-hover h-full"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <div>
                 <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest mb-3">Hidden in your followers</p>
                 <Avatar src="/avatars/emma.png" alt="Emma" size={48} />
-                <h3
-                  className="text-xl font-bold text-ink leading-snug tracking-tight mt-3"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
+                <h3 className="text-xl font-bold text-ink leading-snug tracking-tight mt-3" style={{ fontFamily: "var(--font-display)" }}>
                   <HoverShimmer>A designer with 2M followers</HoverShimmer>
                 </h3>
               </div>
@@ -79,18 +76,15 @@ export default function QuestionWall() {
             </div>
           </AnimateIn>
 
-          {/* Small — unfollower alert */}
+          {/* Small — unfollower */}
           <AnimateIn>
             <div
-              className="border-[3px] border-ink bg-apricot p-5 flex flex-col justify-between min-h-[120px] card-hover"
+              className="border-[3px] border-ink bg-apricot p-5 flex flex-col justify-between min-h-[120px] card-hover h-full"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Alert</p>
               <div>
-                <h3
-                  className="text-lg font-bold text-ink leading-snug tracking-tight mt-2"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
+                <h3 className="text-lg font-bold text-ink leading-snug tracking-tight mt-2" style={{ fontFamily: "var(--font-display)" }}>
                   <HoverShimmer>2 whales unfollowed</HoverShimmer>
                 </h3>
                 <p className="text-xs text-ink/50 mt-1">Both had 100K+ followers</p>
@@ -101,15 +95,12 @@ export default function QuestionWall() {
           {/* Small — viral moment */}
           <AnimateIn>
             <div
-              className="border-[3px] border-ink bg-card p-5 flex flex-col justify-between min-h-[120px] card-hover"
+              className="border-[3px] border-ink bg-card p-5 flex flex-col justify-between min-h-[120px] card-hover h-full"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Trending</p>
               <div>
-                <h3
-                  className="text-lg font-bold text-ink leading-snug tracking-tight mt-2"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
+                <h3 className="text-lg font-bold text-ink leading-snug tracking-tight mt-2" style={{ fontFamily: "var(--font-display)" }}>
                   <HoverShimmer>+47 follows in 1 hour</HoverShimmer>
                 </h3>
                 <p className="text-xs text-ink/50 mt-1">Something you posted went viral</p>
@@ -118,9 +109,9 @@ export default function QuestionWall() {
           </AnimateIn>
 
           {/* Wide — cross-platform */}
-          <AnimateIn>
+          <AnimateIn className="sm:col-span-2">
             <div
-              className="sm:col-span-2 border-[3px] border-ink bg-card p-6 flex items-center gap-4 card-hover"
+              className="border-[3px] border-ink bg-card p-6 flex items-center gap-4 card-hover h-full"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <div className="flex -space-x-2 shrink-0">
@@ -129,10 +120,7 @@ export default function QuestionWall() {
                 <Avatar src="/avatars/james.png" alt="" size={36} />
               </div>
               <div className="flex-1 min-w-0">
-                <h3
-                  className="text-lg font-bold text-ink leading-snug tracking-tight"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
+                <h3 className="text-lg font-bold text-ink leading-snug tracking-tight" style={{ fontFamily: "var(--font-display)" }}>
                   <HoverShimmer>Same person, 3 platforms</HoverShimmer>
                 </h3>
                 <p className="text-xs text-muted mt-0.5">They followed you on X, IG, and TikTok. That means something.</p>
@@ -148,15 +136,12 @@ export default function QuestionWall() {
           {/* Small — founder discovery */}
           <AnimateIn>
             <div
-              className="border-[3px] border-ink bg-blue p-5 flex flex-col justify-between min-h-[120px] card-hover"
+              className="border-[3px] border-ink bg-blue p-5 flex flex-col justify-between min-h-[120px] card-hover h-full"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
               <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Discovery</p>
               <div>
-                <h3
-                  className="text-lg font-bold text-ink leading-snug tracking-tight mt-2"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
+                <h3 className="text-lg font-bold text-ink leading-snug tracking-tight mt-2" style={{ fontFamily: "var(--font-display)" }}>
                   <HoverShimmer>3 YC founders found</HoverShimmer>
                 </h3>
                 <p className="text-xs text-ink/50 mt-1">In your last 200 followers</p>

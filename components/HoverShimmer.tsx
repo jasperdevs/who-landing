@@ -10,7 +10,7 @@ export default function HoverShimmer({ children, className = "" }: { children: s
   const hoveringRef = useRef(false);
 
   // Short text (< 25 chars) = per letter, long text = per word
-  const isShort = children.length < 25;
+  const isShort = children.length < 22;
 
   const pieces = isShort
     ? children.split("")
