@@ -45,7 +45,10 @@ export default function TypeWriter() {
   return (
     <span>
       {phrases[phraseIdx].substring(0, charIdx)}
-      <span className="inline-block w-[3px] h-[1.1em] bg-lime ml-0.5 align-middle" style={{ animation: "cursor-blink 0.8s step-end infinite" }} />
+      <span
+        className="inline-block w-[3px] h-[1.1em] bg-yellow ml-0.5 align-middle"
+        style={{ animation: "cursor-blink 0.8s step-end infinite" }}
+      />
     </span>
   );
 }

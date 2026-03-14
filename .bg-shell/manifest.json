@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": "28cc5edf",
+    "label": "next-dev",
+    "command": "cd /c/Users/bunny/Downloads/orbit && npx next dev -p 3000",
+    "cwd": "C:\\Users\\bunny\\Downloads\\orbit",
+    "startedAt": 1773510011477,
+    "processType": "server",
+    "group": null,
+    "readyPattern": null,
+    "readyPort": 3000,
+    "pid": 198668
+  }
+]

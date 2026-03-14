@@ -1,12 +1,11 @@
 "use client";
 
 import AnimateIn from "./AnimateIn";
-import BrandName from "./BrandName";
 
 const faqs = [
   {
     q: "Is this just a follower tracker?",
-    a: <>No. Follower trackers show numbers. <BrandName size="text-sm" /> shows you people — bios, follower counts, cross-platform presence. The signal behind the noise.</>,
+    a: "No. Follower trackers show numbers. Who? shows you people — bios, follower counts, cross-platform presence. The signal behind the noise.",
   },
   {
     q: "What platforms?",
@@ -28,30 +27,38 @@ const faqs = [
 
 export default function Faq() {
   return (
-    <section id="faq">
-      <AnimateIn>
-        <h2
-          className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-ink text-center uppercase mb-6"
-          style={{ fontFamily: "var(--font-display)" }}
-        >
-          YEAH BUT...
-        </h2>
-      </AnimateIn>
+    <section id="faq" className="bg-blue py-20 md:py-28 border-b-3 border-ink">
+      <div className="mx-auto max-w-6xl px-6">
+        <AnimateIn>
+          <h2
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white uppercase tracking-tight text-center mb-14"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Yeah But...
+          </h2>
+        </AnimateIn>
 
-      <div className="max-w-2xl mx-auto flex flex-col gap-3">
-        {faqs.map((faq, i) => (
-          <AnimateIn key={i}>
-            <div className="bg-card p-6 md:p-7 rounded-2xl">
-              <h3
-                className="text-lg font-bold text-ink leading-snug"
-                style={{ fontFamily: "var(--font-display)" }}
+        <div className="max-w-3xl mx-auto flex flex-col gap-4">
+          {faqs.map((faq, i) => (
+            <AnimateIn key={i}>
+              <div
+                className={`neo-card p-7 ${
+                  i % 2 === 0 ? "bg-yellow" : "bg-white"
+                }`}
               >
-                {faq.q}
-              </h3>
-              <p className="text-base text-ink/50 mt-2 leading-relaxed">{faq.a}</p>
-            </div>
-          </AnimateIn>
-        ))}
+                <h3
+                  className="text-lg font-extrabold text-ink uppercase tracking-tight"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {faq.q}
+                </h3>
+                <p className="text-base text-ink/60 mt-3 leading-relaxed">
+                  {faq.a}
+                </p>
+              </div>
+            </AnimateIn>
+          ))}
+        </div>
       </div>
     </section>
   );

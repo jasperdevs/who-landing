@@ -11,15 +11,13 @@ export default function Home() {
     <>
       <Navbar />
       <main>
-        <div className="mx-auto max-w-5xl px-5 flex flex-col gap-5 pb-8">
-          <Hero />
-          <Features />
-          <Comparison />
-          <Faq />
-          <Cta />
-        </div>
-        <Footer />
+        <Hero />
+        <Features />
+        <Comparison />
+        <Faq />
+        <Cta />
       </main>
+      <Footer />
     </>
   );
 }

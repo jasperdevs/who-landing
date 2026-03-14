@@ -1,5 +1,4 @@
 import Image from "next/image";
-import BrandName from "./BrandName";
 
 const links = [
   { label: "Features", href: "#features" },
@@ -9,19 +8,25 @@ const links = [
 
 export default function Footer() {
   return (
-    <footer className="mt-10 py-10 border-t border-ink/5">
-      <div className="mx-auto max-w-5xl px-5">
-        {/* Logo centered */}
-        <div className="flex flex-col items-center gap-4">
-          <a href="#" className="flex items-center gap-2.5">
+    <footer className="bg-ink py-12 border-t-3 border-ink">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="flex flex-col items-center gap-6">
+          {/* Logo */}
+          <a href="#" className="flex items-center gap-3">
             <Image
-              src="/who-icon.png"
+              src="/whologo.png"
               alt="Who?"
               width={36}
               height={36}
-              style={{ borderRadius: "22%" }}
+              className="border-2 border-white/20"
+              style={{ borderRadius: "8px" }}
             />
-            <BrandName size="text-2xl" />
+            <span
+              className="text-2xl font-extrabold text-white tracking-tight"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Who?
+            </span>
           </a>
 
           {/* Nav links */}
@@ -30,7 +35,7 @@ export default function Footer() {
               <a
                 key={l.label}
                 href={l.href}
-                className="text-sm font-medium text-muted hover:text-ink link-hover"
+                className="text-sm font-semibold text-white/50 hover:text-white transition-colors uppercase tracking-wide"
               >
                 {l.label}
               </a>
@@ -38,14 +43,14 @@ export default function Footer() {
           </div>
 
           {/* Credit */}
-          <div className="flex flex-col sm:flex-row items-center gap-2 mt-4 text-xs text-muted">
+          <div className="flex flex-col sm:flex-row items-center gap-2 mt-4 text-xs text-white/30 font-medium">
             <span>
               Built by{" "}
               <a
                 href="https://x.com/napsdev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-bold text-ink hover:opacity-70 transition-opacity"
+                className="font-bold text-white/50 hover:text-white transition-colors"
               >
                 @napsdev
               </a>
