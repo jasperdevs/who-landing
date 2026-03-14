@@ -5,7 +5,7 @@ import AnimateIn from "./AnimateIn";
 import Image from "next/image";
 import { card, cardInner, pill } from "@/lib/styles";
 
-/* ── Inline counter ── */
+/* ── Counter ── */
 function Counter() {
   const [count, setCount] = useState(142);
   const prevRef = useRef("142");
@@ -28,8 +28,8 @@ function Counter() {
   );
 }
 
-/* ── Inline notif stack ── */
-const handles = ["@xj29dk","@user_8847","@marketing.guru99","@s1lv3rf0x","@cool_dude_42","@jan__smith","@noname9281","@theboss_real","@growth.hacks","@randomguy334","@social_media_tips","@x8k2mq"];
+/* ── Notif stack ── */
+const handles = ["@xj29dk","@user_8847","@marketing.guru99","@s1lv3rf0x","@cool_dude_42","@jan__smith","@noname9281","@theboss_real","@growth.hacks","@randomguy334"];
 
 function NotifStack() {
   const ref = useRef<HTMLDivElement>(null);
@@ -54,7 +54,6 @@ function NotifStack() {
   );
 }
 
-/* ── Signal data ── */
 const signals = [
   { name: "Sara R.", stat: "89K followers", platform: "Instagram", src: "/icons/instagram-appstore-raw.jpg" },
   { name: "James M.", stat: "1.2M followers", platform: "X", src: "/icons/x-appstore-raw.jpg" },
@@ -63,44 +62,54 @@ const signals = [
 
 export default function Comparison() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-      <AnimateIn>
-        <div className={`${card} bg-white h-[380px] flex flex-col`}>
-          <div className="px-4 py-3 border-b-[2.5px] border-ink flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span style={{ animation: "bell-ring 2s ease-in-out infinite", display: "inline-block" }}>🔔</span>
-              <span className="text-xs font-bold text-ink/50 uppercase" style={{ fontFamily: "var(--font-display)" }}>Notifications</span>
-            </div>
-            <Counter />
-          </div>
-          <div className="flex-1 overflow-hidden relative">
-            <NotifStack />
-            <div className="absolute bottom-0 inset-x-0 h-14 pointer-events-none" style={{ background: "linear-gradient(to top, white, transparent)" }} />
-          </div>
-        </div>
-      </AnimateIn>
+    <section className={`${card} bg-cream`}>
+      <div className="px-6 pt-12 md:pt-16">
+        <AnimateIn>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-ink uppercase tracking-tight text-center mb-10" style={{ fontFamily: "var(--font-display)" }}>
+            Noise vs <span className={`${pill} inline-block bg-yellow px-5 py-0.5`}>Signal</span>
+          </h2>
+        </AnimateIn>
+      </div>
 
-      <AnimateIn>
-        <div className={`${card} bg-yellow h-[380px] flex flex-col`}>
-          <div className="px-4 py-3 border-b-[2.5px] border-ink">
-            <span className="text-xs font-bold text-ink/60 uppercase" style={{ fontFamily: "var(--font-display)" }}>✨ Who? Report</span>
-          </div>
-          <div className="flex-1 px-3 pb-3 flex flex-col justify-center gap-2">
-            {signals.map((s) => (
-              <div key={s.name} className={`${cardInner} flex items-center gap-3 p-3 bg-cream`}>
-                <div className="w-10 h-10 rounded-xl border-2 border-ink shrink-0 overflow-hidden">
-                  <Image src={s.src} alt={s.platform} width={40} height={40} className="w-full h-full object-cover" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-ink" style={{ fontFamily: "var(--font-display)" }}>{s.name}</p>
-                  <p className="text-xs text-ink/40">{s.stat}</p>
-                </div>
-                <span className={`${pill} bg-blue text-white text-[10px] font-semibold px-2.5 py-0.5`}>{s.platform}</span>
+      <div className="px-4 pb-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+        <AnimateIn>
+          <div className={`${cardInner} bg-white h-[360px] flex flex-col`}>
+            <div className="px-4 py-3 border-b-2 border-ink flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span style={{ animation: "bell-ring 2s ease-in-out infinite", display: "inline-block" }}>🔔</span>
+                <span className="text-xs font-bold text-ink/50 uppercase" style={{ fontFamily: "var(--font-display)" }}>Notifications</span>
               </div>
-            ))}
+              <Counter />
+            </div>
+            <div className="flex-1 overflow-hidden relative">
+              <NotifStack />
+              <div className="absolute bottom-0 inset-x-0 h-14 pointer-events-none" style={{ background: "linear-gradient(to top, white, transparent)" }} />
+            </div>
           </div>
-        </div>
-      </AnimateIn>
-    </div>
+        </AnimateIn>
+
+        <AnimateIn>
+          <div className={`${cardInner} bg-yellow h-[360px] flex flex-col`}>
+            <div className="px-4 py-3 border-b-2 border-ink">
+              <span className="text-xs font-bold text-ink/60 uppercase" style={{ fontFamily: "var(--font-display)" }}>✨ Who? Report</span>
+            </div>
+            <div className="flex-1 px-3 pb-3 flex flex-col justify-center gap-2">
+              {signals.map((s) => (
+                <div key={s.name} className="flex items-center gap-3 p-3 bg-cream rounded-xl border-2 border-ink">
+                  <div className="w-10 h-10 rounded-xl border-2 border-ink shrink-0 overflow-hidden">
+                    <Image src={s.src} alt={s.platform} width={40} height={40} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-bold text-ink" style={{ fontFamily: "var(--font-display)" }}>{s.name}</p>
+                    <p className="text-xs text-ink/40">{s.stat}</p>
+                  </div>
+                  <span className={`${pill} bg-blue text-white text-[10px] font-semibold px-2.5 py-0.5`}>{s.platform}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </AnimateIn>
+      </div>
+    </section>
   );
 }
