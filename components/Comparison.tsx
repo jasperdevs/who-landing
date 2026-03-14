@@ -82,7 +82,7 @@ export default function Comparison() {
               </span>
             </h2>
             <p className="mt-3 text-lg text-muted max-w-sm mx-auto leading-relaxed">
-              Your notifications are useless. Who? makes them meaningful.
+              Your notifications are useless. <BrandName size="text-lg" /> makes them meaningful.
             </p>
           </div>
 

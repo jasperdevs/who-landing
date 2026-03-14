@@ -57,7 +57,7 @@ export default function Footer() {
             </a>
           </p>
           <p className="text-xs text-muted">
-            &copy; {new Date().getFullYear()} Who?
+            &copy; {new Date().getFullYear()} <BrandName size="text-xs" />
           </p>
         </div>
       </div>

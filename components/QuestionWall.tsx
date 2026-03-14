@@ -1,187 +1,170 @@
-import {
-  IconBell,
-  IconUser,
-  IconEye,
-  IconTrendingUp,
-  IconSearch,
-  IconArrowRight,
-} from "./Icons";
+"use client";
+
 import Avatar from "./Avatar";
 import AnimateIn from "./AnimateIn";
 import ScrollUnderline from "./ScrollUnderline";
 import HoverShimmer from "./HoverShimmer";
-
+import BrandName from "./BrandName";
+import { AppIconX, AppIconInstagram, AppIconTikTok } from "./Icons";
 
 export default function QuestionWall() {
   return (
-    <section className="px-5 py-10 md:py-14">
+    <section className="px-5 py-12 md:py-20">
       <div className="mx-auto max-w-3xl">
         <AnimateIn>
-          <div className="text-center mb-8">
+          <div className="text-center mb-10">
             <h2
               className="text-4xl md:text-5xl font-bold tracking-tight text-ink"
               style={{ fontFamily: "var(--font-display)" }}
             >
-               Ask{" "}
+              Discover{" "}
               <span className="relative inline-block">
-                anything.
+                anyone.
                 <ScrollUnderline />
               </span>
             </h2>
-            <p className="mt-3 text-lg text-muted max-w-sm mx-auto leading-relaxed">
-              Who? answers the questions your notifications never could.
+            <p className="mt-3 text-lg text-muted max-w-md mx-auto leading-relaxed">
+              Behind every follow is a person. <BrandName size="text-lg" /> shows you who they really are.
             </p>
           </div>
         </AnimateIn>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 
-            {/* Large -- who noticed you? */}
+          {/* Large — VC discovery */}
+          <AnimateIn>
             <div
-              className="sm:col-span-2 border-[3px] border-ink bg-blue p-6 md:p-7 card-hover"
+              className="sm:col-span-2 border-[3px] border-ink bg-blue p-6 card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
-              <div className="flex items-start justify-between gap-4 mb-5">
-                <h3
-                  className="text-2xl md:text-3xl font-bold text-ink leading-snug tracking-tight"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                   <HoverShimmer>who noticed you?</HoverShimmer>
-                </h3>
-                <div
-                  className="w-11 h-11 border-[3px] border-ink bg-cream flex items-center justify-center shrink-0"
-                  style={{ borderRadius: "var(--radius-sm)" }}
-                >
-                  <IconSearch className="w-5 h-5 text-ink" />
+              <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest mb-3">You would have missed</p>
+              <div className="flex items-center gap-3 mb-4">
+                <Avatar src="/avatars/james.png" alt="Marc" size={44} />
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-base font-bold text-ink">Marc B.</span>
+                    <AppIconX size={14} />
+                  </div>
+                  <p className="text-xs text-ink/50">Partner @ a16z · 540K followers</p>
                 </div>
               </div>
-              <div className="flex gap-2">
-                <div className="flex -space-x-3">
-                  <Avatar src="/avatars/sara.png" alt="Sara" size={34} />
-                  <Avatar src="/avatars/james.png" alt="James" size={34} />
-                  <Avatar src="/avatars/priya.png" alt="Priya" size={34} />
-                </div>
-                <span
-                  className="text-sm font-bold text-ink bg-cream px-3 py-1.5 border-[2px] border-ink self-center"
-                  style={{ borderRadius: "var(--radius-sm)" }}
-                >
-                  +12 this week
-                </span>
+              <div className="flex gap-2 flex-wrap">
+                <span className="text-xs font-bold text-ink bg-lime/60 px-2.5 py-1 border-[2px] border-ink/20" style={{ borderRadius: 8 }}>VC</span>
+                <span className="text-xs font-bold text-ink bg-cream px-2.5 py-1 border-[2px] border-ink/20" style={{ borderRadius: 8 }}>Crypto</span>
+                <span className="text-xs font-bold text-ink bg-apricot/60 px-2.5 py-1 border-[2px] border-ink/20" style={{ borderRadius: 8 }}>Top 0.1%</span>
               </div>
             </div>
+          </AnimateIn>
 
-            {/* Tall -- who matters? */}
+          {/* Tall — creator you didn't know */}
+          <AnimateIn>
             <div
-              className="sm:col-span-2 md:col-span-1 md:row-span-2 border-[3px] border-ink bg-lime p-6 md:p-7 flex flex-col justify-between card-hover"
+              className="sm:col-span-2 md:col-span-1 md:row-span-2 border-[3px] border-ink bg-lime p-6 flex flex-col justify-between card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
-              <div
-                className="w-11 h-11 border-[3px] border-ink bg-cream flex items-center justify-center"
-                style={{ borderRadius: "var(--radius-sm)" }}
-              >
-                <IconArrowRight className="w-5 h-5 text-ink" />
-              </div>
               <div>
+                <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest mb-3">Hidden in your followers</p>
+                <Avatar src="/avatars/emma.png" alt="Emma" size={48} />
                 <h3
-                  className="text-2xl md:text-3xl font-bold text-ink leading-snug tracking-tight mt-6"
+                  className="text-xl font-bold text-ink leading-snug tracking-tight mt-3"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                  <HoverShimmer>who</HoverShimmer><br /><HoverShimmer>matters?</HoverShimmer>
+                  <HoverShimmer>A designer with 2M followers</HoverShimmer>
                 </h3>
-                <p className="text-sm text-ink/60 mt-2">
-                  <HoverShimmer>Filter the noise. Surface the signal.</HoverShimmer>
-                </p>
+              </div>
+              <div className="flex items-center gap-1.5 mt-4">
+                <AppIconInstagram size={16} />
+                <p className="text-xs text-ink/50">Followed you 3 days ago. You had no idea.</p>
               </div>
             </div>
+          </AnimateIn>
 
-            {/* Small -- who just followed? */}
-            <div
-              className="border-[3px] border-ink bg-card p-5 flex flex-col justify-between min-h-[120px] card-hover"
-              style={{ borderRadius: "var(--radius-xl)" }}
-            >
-              <div
-                className="w-10 h-10 border-[3px] border-ink bg-cream flex items-center justify-center"
-                style={{ borderRadius: "var(--radius-sm)" }}
-              >
-                <IconBell className="w-4 h-4 text-ink" />
-              </div>
-              <h3
-                className="text-lg font-bold text-ink leading-snug tracking-tight mt-3"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                <HoverShimmer>who just followed?</HoverShimmer>
-              </h3>
-            </div>
-
-            {/* Small -- who unfollowed? */}
+          {/* Small — unfollower alert */}
+          <AnimateIn>
             <div
               className="border-[3px] border-ink bg-apricot p-5 flex flex-col justify-between min-h-[120px] card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
-              <div
-                className="w-10 h-10 border-[3px] border-ink bg-cream flex items-center justify-center"
-                style={{ borderRadius: "var(--radius-sm)" }}
-              >
-                <IconEye className="w-4 h-4 text-ink" />
-              </div>
-              <h3
-                className="text-lg font-bold text-ink leading-snug tracking-tight mt-3"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                <HoverShimmer>who unfollowed?</HoverShimmer>
-              </h3>
-            </div>
-
-            {/* Wide -- who has 1M+ followers? */}
-            <div
-              className="sm:col-span-2 border-[3px] border-ink bg-card p-6 md:p-7 flex items-center justify-between gap-4 card-hover"
-              style={{ borderRadius: "var(--radius-xl)" }}
-            >
+              <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Alert</p>
               <div>
                 <h3
-                  className="text-2xl font-bold text-ink leading-snug tracking-tight"
+                  className="text-lg font-bold text-ink leading-snug tracking-tight mt-2"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
-                   <HoverShimmer>who has 1M+ followers?</HoverShimmer>
+                  <HoverShimmer>2 whales unfollowed</HoverShimmer>
                 </h3>
-                <p className="text-sm text-muted mt-1"><HoverShimmer>Find the big accounts in your followers.</HoverShimmer></p>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                <span
-                  className="text-sm font-bold text-ink bg-lime px-3 py-1.5 border-[2px] border-ink"
-                  style={{ borderRadius: "var(--radius-sm)" }}
-                >
-                  3 found
-                </span>
-                <span
-                  className="text-sm font-bold text-ink bg-cream px-2.5 py-1.5 border-[2px] border-ink flex items-center justify-center"
-                  style={{ borderRadius: "var(--radius-sm)" }}
-                >
-                  <IconTrendingUp className="w-4 h-4 text-ink" />
-                </span>
+                <p className="text-xs text-ink/50 mt-1">Both had 100K+ followers</p>
               </div>
             </div>
+          </AnimateIn>
 
-            {/* Bottom right -- who's a founder? (fills the gap) */}
+          {/* Small — viral moment */}
+          <AnimateIn>
             <div
               className="border-[3px] border-ink bg-card p-5 flex flex-col justify-between min-h-[120px] card-hover"
               style={{ borderRadius: "var(--radius-xl)" }}
             >
-              <div
-                className="w-10 h-10 border-[3px] border-ink bg-cream flex items-center justify-center"
-                style={{ borderRadius: "var(--radius-sm)" }}
-              >
-                <IconUser className="w-4 h-4 text-ink" />
+              <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Trending</p>
+              <div>
+                <h3
+                  className="text-lg font-bold text-ink leading-snug tracking-tight mt-2"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  <HoverShimmer>+47 follows in 1 hour</HoverShimmer>
+                </h3>
+                <p className="text-xs text-ink/50 mt-1">Something you posted went viral</p>
               </div>
-              <h3
-                className="text-lg font-bold text-ink leading-snug tracking-tight mt-3"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                <HoverShimmer>who&apos;s a founder?</HoverShimmer>
-              </h3>
             </div>
+          </AnimateIn>
 
-          </div>
+          {/* Wide — cross-platform */}
+          <AnimateIn>
+            <div
+              className="sm:col-span-2 border-[3px] border-ink bg-card p-6 flex items-center gap-4 card-hover"
+              style={{ borderRadius: "var(--radius-xl)" }}
+            >
+              <div className="flex -space-x-2 shrink-0">
+                <Avatar src="/avatars/sara.png" alt="" size={36} />
+                <Avatar src="/avatars/priya.png" alt="" size={36} />
+                <Avatar src="/avatars/james.png" alt="" size={36} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3
+                  className="text-lg font-bold text-ink leading-snug tracking-tight"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  <HoverShimmer>Same person, 3 platforms</HoverShimmer>
+                </h3>
+                <p className="text-xs text-muted mt-0.5">They followed you on X, IG, and TikTok. That means something.</p>
+              </div>
+              <div className="flex gap-1.5 shrink-0">
+                <AppIconX size={20} />
+                <AppIconInstagram size={20} />
+                <AppIconTikTok size={20} />
+              </div>
+            </div>
+          </AnimateIn>
+
+          {/* Small — founder discovery */}
+          <AnimateIn>
+            <div
+              className="border-[3px] border-ink bg-blue p-5 flex flex-col justify-between min-h-[120px] card-hover"
+              style={{ borderRadius: "var(--radius-xl)" }}
+            >
+              <p className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Discovery</p>
+              <div>
+                <h3
+                  className="text-lg font-bold text-ink leading-snug tracking-tight mt-2"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  <HoverShimmer>3 YC founders found</HoverShimmer>
+                </h3>
+                <p className="text-xs text-ink/50 mt-1">In your last 200 followers</p>
+              </div>
+            </div>
+          </AnimateIn>
+
+        </div>
       </div>
     </section>
   );

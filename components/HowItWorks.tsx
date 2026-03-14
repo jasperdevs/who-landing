@@ -102,7 +102,7 @@ export default function HowItWorks() {
                 <HoverShimmer>We analyze every follower</HoverShimmer>
               </h3>
               <p className="text-sm text-ink/50 mt-2 leading-relaxed">
-                <HoverShimmer>Who? scans and surfaces the followers that actually matter.</HoverShimmer>
+                <HoverShimmer>Scans and surfaces the followers that actually matter.</HoverShimmer>
               </p>
             </div>
 
