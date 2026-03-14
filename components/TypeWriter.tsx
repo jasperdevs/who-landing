@@ -2,53 +2,25 @@
 
 import { useEffect, useState } from "react";
 
-const phrases = [
-  "See who just followed you.",
-  "See who has 1M followers.",
-  "See who noticed you.",
-  "See who matters.",
-];
-
-const TYPE_SPEED = 35;
-const DELETE_SPEED = 20;
-const PAUSE_AFTER_TYPE = 1600;
-const PAUSE_AFTER_DELETE = 300;
+const phrases = ["See who just followed you.", "See who has 1M followers.", "See who noticed you.", "See who matters."];
 
 export default function TypeWriter() {
-  const [phraseIdx, setPhraseIdx] = useState(0);
-  const [charIdx, setCharIdx] = useState(0);
-  const [deleting, setDeleting] = useState(false);
+  const [pi, setPi] = useState(0);
+  const [ci, setCi] = useState(0);
+  const [del, setDel] = useState(false);
 
   useEffect(() => {
-    const phrase = phrases[phraseIdx];
-
-    if (!deleting && charIdx === phrase.length) {
-      const t = setTimeout(() => setDeleting(true), PAUSE_AFTER_TYPE);
-      return () => clearTimeout(t);
-    }
-
-    if (deleting && charIdx === 0) {
-      const t = setTimeout(() => {
-        setDeleting(false);
-        setPhraseIdx((i) => (i + 1) % phrases.length);
-      }, PAUSE_AFTER_DELETE);
-      return () => clearTimeout(t);
-    }
-
-    const speed = deleting ? DELETE_SPEED : TYPE_SPEED;
-    const t = setTimeout(() => {
-      setCharIdx((c) => c + (deleting ? -1 : 1));
-    }, speed);
+    const p = phrases[pi];
+    if (!del && ci === p.length) { const t = setTimeout(() => setDel(true), 1600); return () => clearTimeout(t); }
+    if (del && ci === 0) { const t = setTimeout(() => { setDel(false); setPi((i) => (i + 1) % phrases.length); }, 300); return () => clearTimeout(t); }
+    const t = setTimeout(() => setCi((c) => c + (del ? -1 : 1)), del ? 20 : 35);
     return () => clearTimeout(t);
-  }, [charIdx, deleting, phraseIdx]);
+  }, [ci, del, pi]);
 
   return (
     <span>
-      {phrases[phraseIdx].substring(0, charIdx)}
-      <span
-        className="inline-block w-[2px] h-[1.1em] bg-blue ml-0.5 align-middle rounded-full"
-        style={{ animation: "cursor-blink 0.8s step-end infinite" }}
-      />
+      {phrases[pi].substring(0, ci)}
+      <span className="inline-block w-[2px] h-[1.1em] bg-blue ml-0.5 align-middle rounded-full" style={{ animation: "cursor-blink 0.8s step-end infinite" }} />
     </span>
   );
 }

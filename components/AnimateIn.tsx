@@ -2,50 +2,22 @@
 
 import { useEffect, useRef, useState, ReactNode } from "react";
 
-interface AnimateInProps {
-  children: ReactNode;
-  className?: string;
-}
-
-export default function AnimateIn({ children, className = "" }: AnimateInProps) {
+export default function AnimateIn({ children, className = "" }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-
     const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-      setVisible(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.08 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) { setVisible(true); return; }
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.unobserve(el); } }, { threshold: 0.08 });
+    obs.observe(el);
+    return () => obs.disconnect();
   }, []);
 
   return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(24px)",
-        transition:
-          "opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-      }}
-    >
+    <div ref={ref} className={className} style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: "opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1)" }}>
       {children}
     </div>
   );
