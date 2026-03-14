@@ -7,14 +7,19 @@
   --color-sky: #b4ddef;
   --color-white: #f7ffff;
   --color-ink: #0a0a0a;
-  --color-muted: #5a6872;
+  --color-muted: #6b7280;
+
+  --radius-card: 28px;
+  --radius-btn: 100px;
+  --radius-pill: 100px;
+  --radius-icon: 16px;
 }
 
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scrollbar-width: thin;
-  scrollbar-color: var(--color-ink) var(--color-blue);
+  scrollbar-color: rgba(0,0,0,0.2) transparent;
 }
 
 body {
@@ -28,55 +33,31 @@ body {
   color: var(--color-ink);
 }
 
-/* ── Neo-brutalist pill card ── */
-.neo-card {
-  border: 3px solid var(--color-ink);
-  box-shadow: 5px 5px 0px 0px var(--color-ink);
-  border-radius: 24px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.neo-card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 7px 7px 0px 0px var(--color-ink);
-}
-
-.neo-card-static {
-  border: 3px solid var(--color-ink);
-  box-shadow: 5px 5px 0px 0px var(--color-ink);
-  border-radius: 24px;
-}
-
-.neo-card-sm {
-  border: 2px solid var(--color-ink);
-  box-shadow: 3px 3px 0px 0px var(--color-ink);
-  border-radius: 16px;
+/* ── Bento card ── */
+.bento {
+  border-radius: var(--radius-card);
+  overflow: hidden;
 }
 
 /* ── Pill button ── */
-.neo-btn {
-  border: 3px solid var(--color-ink);
-  box-shadow: 4px 4px 0px 0px var(--color-ink);
-  border-radius: 100px;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+.pill-btn {
+  border-radius: var(--radius-btn);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
   cursor: pointer;
-  text-transform: uppercase;
-  font-weight: 800;
-  letter-spacing: 0.03em;
 }
-.neo-btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px var(--color-ink);
+.pill-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
-.neo-btn:active {
-  transform: translate(2px, 2px);
-  box-shadow: 0px 0px 0px 0px var(--color-ink);
+.pill-btn:active {
+  transform: translateY(0);
 }
 
 /* ── Pill badge ── */
-.neo-pill {
-  border: 2px solid var(--color-ink);
-  box-shadow: 3px 3px 0px 0px var(--color-ink);
-  border-radius: 100px;
+.pill-badge {
+  border-radius: var(--radius-pill);
 }
 
 /* ── Typing cursor ── */
@@ -87,11 +68,11 @@ body {
 
 /* ── Fade in up ── */
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(30px); }
+  from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
 }
 .animate-fade-in-up {
-  animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* ── Bell ring ── */
@@ -115,7 +96,7 @@ body {
 
 /* ── Notification slide ── */
 @keyframes notif-slide-in {
-  0% { opacity: 0; transform: translateX(-30px); }
+  0% { opacity: 0; transform: translateX(-24px); }
   100% { opacity: 1; transform: translateX(0); }
 }
 .notif-slide-in {
@@ -124,7 +105,7 @@ body {
 
 /* ── Mobile menu ── */
 @keyframes menu-slide-down {
-  from { opacity: 0; transform: translateY(-12px); }
+  from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -145,10 +126,9 @@ body {
 }
 
 /* ── Scrollbar ── */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--color-blue); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-ink);
-  border: 2px solid var(--color-blue);
+  background: rgba(0,0,0,0.2);
   border-radius: 100px;
 }

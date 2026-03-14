@@ -9,15 +9,13 @@ import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <div className="min-h-screen bg-blue">
-      <div className="mx-auto max-w-[960px] px-4 py-4 flex flex-col gap-4">
+      <div className="mx-auto max-w-[940px] px-4 py-3 flex flex-col gap-3">
         <Navbar />
-        <main className="flex flex-col gap-4">
-          <Hero />
-          <Features />
-          <Comparison />
-          <Faq />
-          <Cta />
-        </main>
+        <Hero />
+        <Features />
+        <Comparison />
+        <Faq />
+        <Cta />
         <Footer />
       </div>
     </div>
