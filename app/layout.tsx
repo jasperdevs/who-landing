@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Baloo_2, Nunito } from "next/font/google";
 import "./globals.css";
 
-
 const nunito = Nunito({
   subsets: ["latin"],
   display: "swap",
@@ -48,12 +47,6 @@ export default function RootLayout({
         style={{ fontFamily: "var(--font-body)" }}
       >
         {children}
-
-        {/* Bottom fade - subtle */}
-        <div
-          className="fixed inset-x-0 bottom-0 h-8 pointer-events-none z-50"
-          style={{ background: "linear-gradient(to top, var(--color-cream), transparent)" }}
-        />
       </body>
     </html>
   );

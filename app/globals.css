@@ -7,12 +7,13 @@
   --color-blue: #a9c6ff;
   --color-lime: #b9f27c;
   --color-apricot: #ffc38a;
+  --color-lavender: #c8b6ff;
   --color-muted: #746d61;
 
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 24px;
-  --radius-xl: 28px;
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 32px;
 }
 
 * {
@@ -29,7 +30,7 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-blue);
+  background-color: var(--color-lime);
   color: var(--color-ink);
 }
 
@@ -37,16 +38,6 @@ body {
 @keyframes cursor-blink {
   0%, 49% { opacity: 1; }
   50%, 100% { opacity: 0; }
-}
-
-/* ── Bell wiggle ── */
-@keyframes bell-ring {
-  0%, 100% { transform: rotate(0deg); }
-  15% { transform: rotate(12deg); }
-  30% { transform: rotate(-10deg); }
-  45% { transform: rotate(6deg); }
-  60% { transform: rotate(-4deg); }
-  75% { transform: rotate(2deg); }
 }
 
 /* ── Bounce chevron ── */
@@ -60,8 +51,6 @@ body {
   from { opacity: 0; transform: translateY(-12px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-
 
 /* ── Notification slide-in ── */
 @keyframes notif-slide-in {
@@ -107,32 +96,14 @@ body {
   animation: draw-underline 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
 }
 
-
-
-/* ── Neo-brutalist hover shadow ── */
-.card-hover, .btn-hover {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.card-hover:hover, .btn-hover:hover {
-  transform: translate(-2px, -3px);
-  box-shadow: 4px 5px 0px 0px var(--color-ink);
-}
-.btn-hover-dark {
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.btn-hover-dark:hover {
-  transform: translate(-2px, -3px);
-  box-shadow: 4px 5px 0px 0px var(--color-lime);
-}
-.link-hover {
-  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.15s ease;
-  text-underline-offset: 3px;
-}
-.link-hover:hover {
-  transform: translate(-1px, -1px);
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-shadow: 2px 2px 0px var(--color-lime);
+/* ── Bell wiggle ── */
+@keyframes bell-ring {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(12deg); }
+  30% { transform: rotate(-10deg); }
+  45% { transform: rotate(6deg); }
+  60% { transform: rotate(-4deg); }
+  75% { transform: rotate(2deg); }
 }
 
 /* ── Slot digit animations (counter) ── */
@@ -149,6 +120,38 @@ body {
 @keyframes marquee-scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+/* ── Soft hover lift ── */
+.card-hover {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+.btn-hover {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-hover-dark {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-hover-dark:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.link-hover {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.15s ease;
+}
+.link-hover:hover {
+  opacity: 0.7;
 }
 
 /* ── Custom scrollbar ── */

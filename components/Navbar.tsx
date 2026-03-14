@@ -2,81 +2,88 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import HoverShimmer from "./HoverShimmer";
 import BrandName from "./BrandName";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 w-full">
-      <div className="relative px-5 py-3">
-        <div
-          className="mx-auto max-w-3xl flex items-center justify-between h-14 px-5 border-[3px] border-ink bg-card/90 backdrop-blur-md"
-          style={{ borderRadius: "var(--radius-xl)" }}
-        >
-          <a href="#" className="flex items-center gap-2">
-            <Image
-              src="/who-icon.png"
-              alt="Who?"
-              width={30}
-              height={30}
-              style={{ borderRadius: "22%" }}
-            />
-            <BrandName size="text-xl" />
-          </a>
+    <nav className="sticky top-0 z-50 w-full bg-cream/80 backdrop-blur-md">
+      <div className="mx-auto max-w-5xl px-5 py-4 flex items-center justify-between">
+        {/* Logo */}
+        <a href="#" className="flex items-center gap-2.5">
+          <Image
+            src="/who-icon.png"
+            alt="Who?"
+            width={36}
+            height={36}
+            style={{ borderRadius: "22%" }}
+          />
+          <BrandName size="text-2xl" />
+        </a>
 
-          <div className="hidden md:flex items-center gap-2">
-            <a href="#features" className="text-sm font-medium text-muted hover:text-ink px-4 py-2 link-hover">
-              <HoverShimmer>Features</HoverShimmer>
+        {/* Right side - desktop links + mobile hamburger */}
+        <div className="flex items-center gap-3">
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-1">
+            <a href="#features" className="text-sm font-semibold text-muted hover:text-ink px-4 py-2 link-hover rounded-full">
+              Features
             </a>
-            <a href="#about" className="text-sm font-medium text-muted hover:text-ink px-4 py-2 link-hover">
-              <HoverShimmer>About</HoverShimmer>
+            <a href="#faq" className="text-sm font-semibold text-muted hover:text-ink px-4 py-2 link-hover rounded-full">
+              FAQ
             </a>
             <a
               href="#waitlist"
-              className="btn-hover-dark inline-flex items-center px-5 py-2 text-sm font-bold bg-ink text-cream border-[3px] border-ink ml-2"
-              style={{ borderRadius: "var(--radius-md)" }}
+              className="btn-hover-dark ml-2 inline-flex items-center px-6 py-2.5 text-sm font-bold bg-ink text-cream rounded-full"
             >
-              <HoverShimmer>Join waitlist</HoverShimmer>
+              Join waitlist
             </a>
           </div>
 
+          {/* Hamburger */}
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden w-10 h-10 border-[2px] border-ink flex items-center justify-center btn-hover active:translate-y-[1px]"
-            style={{ borderRadius: "var(--radius-sm)" }}
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl hover:bg-ink/5 transition-colors"
             aria-label="Menu"
           >
-            <span className="text-ink font-bold text-lg leading-none">{open ? "\u00d7" : "\u2261"}</span>
+            <svg className="w-6 h-6 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              {open ? (
+                <>
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                  <line x1="6" y1="18" x2="18" y2="6" />
+                </>
+              ) : (
+                <>
+                  <line x1="4" y1="7" x2="20" y2="7" />
+                  <line x1="4" y1="12" x2="20" y2="12" />
+                  <line x1="4" y1="17" x2="20" y2="17" />
+                </>
+              )}
+            </svg>
           </button>
         </div>
-
-        {open && (
-          <>
-            {/* Backdrop */}
-            <div
-              className="fixed inset-0 z-[-1]"
-              onClick={() => setOpen(false)}
-            />
-            <div
-              className="md:hidden mt-2 mx-auto max-w-3xl border-[3px] border-ink bg-card p-5"
-              style={{ borderRadius: "var(--radius-lg)", animation: "menu-slide-down 0.25s ease-out" }}
-            >
-              <a href="#features" onClick={() => setOpen(false)} className="block py-3 px-3 text-lg font-medium text-muted hover:text-ink link-hover">Features</a>
-              <a href="#about" onClick={() => setOpen(false)} className="block py-3 px-3 text-lg font-medium text-muted hover:text-ink link-hover">About</a>
-              <a
-                href="#waitlist"
-                onClick={() => setOpen(false)}
-                className="block mt-3 text-center py-3.5 bg-ink text-cream text-lg font-semibold btn-hover-dark"
-                style={{ borderRadius: "var(--radius-md)" }}
-              >
-                Join waitlist
-              </a>
-            </div>
-          </>
-        )}
       </div>
+
+      {/* Mobile dropdown */}
+      {open && (
+        <>
+          <div className="fixed inset-0 z-[-1]" onClick={() => setOpen(false)} />
+          <div
+            className="md:hidden mx-5 mb-3 bg-card rounded-2xl p-5 shadow-lg"
+            style={{ animation: "menu-slide-down 0.25s ease-out" }}
+          >
+            <a href="#features" onClick={() => setOpen(false)} className="block py-3 text-lg font-semibold text-ink">Features</a>
+            <a href="#faq" onClick={() => setOpen(false)} className="block py-3 text-lg font-semibold text-ink">FAQ</a>
+            <a
+              href="#waitlist"
+              onClick={() => setOpen(false)}
+              className="block mt-3 text-center py-3.5 bg-ink text-cream text-lg font-bold rounded-full"
+            >
+              Join waitlist
+            </a>
+          </div>
+        </>
+      )}
     </nav>
   );
 }
