@@ -9,24 +9,13 @@ import NotificationStack from "./NotificationStack";
 import HoverShimmer from "./HoverShimmer";
 import BrandName from "./BrandName";
 
-
-/* ── Stock-ticker counter ── */
-
 function SlotDigit({ digit, prevDigit }: { digit: string; prevDigit: string }) {
   const changed = digit !== prevDigit;
   if (!changed) return <span className="inline-block" style={{ width: "0.6em" }}>{digit}</span>;
   return (
     <span className="inline-block overflow-hidden relative" style={{ height: "1.2em", width: "0.6em" }}>
-      <span
-        key={`old-${prevDigit}-${digit}`}
-        className="absolute inset-0 flex items-center justify-center"
-        style={{ animation: "slot-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards" }}
-      >{prevDigit}</span>
-      <span
-        key={`new-${digit}-${prevDigit}`}
-        className="absolute inset-0 flex items-center justify-center"
-        style={{ animation: "slot-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards" }}
-      >{digit}</span>
+      <span key={`old-${prevDigit}-${digit}`} className="absolute inset-0 flex items-center justify-center" style={{ animation: "slot-out 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards" }}>{prevDigit}</span>
+      <span key={`new-${digit}-${prevDigit}`} className="absolute inset-0 flex items-center justify-center" style={{ animation: "slot-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards" }}>{digit}</span>
     </span>
   );
 }
@@ -50,31 +39,17 @@ function AnimatedCounter() {
   );
 }
 
-const signal = [
-  { avatar: "/avatars/sara.png", name: "Sara R.", followers: "89K", icon: <AppIconInstagram size={26} /> },
-  { avatar: "/avatars/james.png", name: "James M.", followers: "1.2M", icon: <AppIconX size={26} /> },
-  { avatar: "/avatars/priya.png", name: "Priya S.", followers: "310K", icon: <AppIconTikTok size={26} /> },
-];
-
 export default function Comparison() {
   return (
-    <section id="features" className="px-5 py-10 md:py-14">
+    <section id="features" className="px-5 py-12 md:py-20">
       <div className="mx-auto max-w-3xl">
         <AnimateIn>
-          <div className="text-center mb-8">
-            <h2
-              className="text-4xl md:text-5xl font-bold tracking-tight text-ink"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
+          <div className="text-center mb-10">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-ink" style={{ fontFamily: "var(--font-display)" }}>
               <NoiseText text="Noise" /> vs.{" "}
               <span className="relative inline-block">
                 Signal.
-                <svg
-                  className="absolute pointer-events-none"
-                  style={{ top: -19, right: -19, width: 49, height: 49, transform: "rotate(46deg)" }}
-                  viewBox="0 0 40 40"
-                  fill="none"
-                >
+                <svg className="absolute pointer-events-none" style={{ top: -19, right: -19, width: 49, height: 49, transform: "rotate(46deg)" }} viewBox="0 0 40 40" fill="none">
                   <line x1="20" y1="1" x2="20" y2="15" stroke="var(--color-apricot)" strokeWidth="3.5" strokeLinecap="round" />
                   <line x1="30" y1="5" x2="24" y2="16" stroke="var(--color-apricot)" strokeWidth="3.5" strokeLinecap="round" />
                   <line x1="10" y1="5" x2="16" y2="16" stroke="var(--color-apricot)" strokeWidth="3.5" strokeLinecap="round" />
@@ -85,60 +60,66 @@ export default function Comparison() {
               Your notifications are useless. <BrandName size="text-lg" /> makes them meaningful.
             </p>
           </div>
+        </AnimateIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Noise side -- continuous scroll, each slides from left */}
-            <div
-              className="border-[3px] border-ink bg-card h-[340px] md:h-[440px] overflow-hidden relative"
-              style={{ borderRadius: "var(--radius-xl)", contain: "strict" }}
-            >
-              <div className="px-5 py-3.5 border-b-[3px] border-ink flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span style={{ animation: "bell-ring 2s ease-in-out infinite", display: "inline-block" }}><IconBell className="w-5 h-5 text-muted" /></span>
+        <div className="grid grid-cols-6 auto-rows-[60px] gap-3">
+
+          {/* Noise — notifications panel (tall left) */}
+          <AnimateIn className="col-span-6 md:col-span-3 row-span-6">
+            <div className="border-[3px] border-ink bg-card h-full overflow-hidden relative" style={{ borderRadius: "var(--radius-xl)", contain: "strict" }}>
+              <div className="px-4 py-3 border-b-[3px] border-ink flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span style={{ animation: "bell-ring 2s ease-in-out infinite", display: "inline-block" }}><IconBell className="w-4 h-4 text-muted" /></span>
                   <span className="text-sm font-bold text-muted">Notifications</span>
                 </div>
                 <AnimatedCounter />
               </div>
-              <div className="relative h-[calc(100%-56px)]">
+              <div className="relative h-[calc(100%-48px)]">
                 <NotificationStack />
-                <div
-                  className="absolute top-0 left-0 right-0 h-10 pointer-events-none z-10"
-                  style={{ background: "linear-gradient(to bottom, var(--color-card) 0%, transparent 100%)" }}
-                />
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none z-10"
-                  style={{ background: "linear-gradient(to top, var(--color-card) 0%, transparent 100%)" }}
-                />
+                <div className="absolute top-0 inset-x-0 h-8 pointer-events-none z-10" style={{ background: "linear-gradient(to bottom, var(--color-card), transparent)" }} />
+                <div className="absolute bottom-0 inset-x-0 h-8 pointer-events-none z-10" style={{ background: "linear-gradient(to top, var(--color-card), transparent)" }} />
               </div>
             </div>
+          </AnimateIn>
 
-            {/* Signal side */}
-            <div
-              className="border-[3px] border-ink bg-blue h-[340px] md:h-[440px] flex flex-col"
-              style={{ borderRadius: "var(--radius-xl)" }}
-            >
-              <div className="px-5 py-3.5 border-b-[3px] border-ink">
-                <BrandName size="text-xl" />
-              </div>
-              <div className="flex-1 p-5 flex flex-col justify-center gap-3.5">
-                {signal.map((s) => (
-                  <div
-                    key={s.name}
-                    className="flex items-center gap-3.5 p-4 border-[3px] border-ink bg-cream card-hover"
-                    style={{ borderRadius: "var(--radius-lg)" }}
-                  >
-                    <Avatar src={s.avatar} alt={s.name} size={48} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[15px] font-bold text-ink"><HoverShimmer>{s.name}</HoverShimmer></p>
-                      <p className="text-sm text-muted mt-0.5"><HoverShimmer>{`${s.followers} followers`}</HoverShimmer></p>
-                    </div>
-                    {s.icon}
-                  </div>
-                ))}
-              </div>
+          {/* Signal header card */}
+          <AnimateIn className="col-span-3 row-span-2">
+            <div className="border-[3px] border-ink bg-blue p-4 h-full flex items-center gap-3 card-hover" style={{ borderRadius: "var(--radius-xl)" }}>
+              <BrandName size="text-xl" />
+              <span className="text-xs text-ink/40 ml-auto font-bold uppercase tracking-widest">Signal</span>
             </div>
-          </div>
-        </AnimateIn>
+          </AnimateIn>
+
+          {/* Sara */}
+          <AnimateIn className="col-span-3 row-span-2">
+            <div className="border-[3px] border-ink bg-cream p-3.5 h-full flex items-center gap-3 card-hover" style={{ borderRadius: "var(--radius-xl)" }}>
+              <Avatar src="/avatars/sara.png" alt="Sara" size={38} />
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold text-ink"><HoverShimmer>Sara R.</HoverShimmer></p>
+                <p className="text-[11px] text-ink/50">89K followers</p>
+              </div>
+              <AppIconInstagram size={18} />
+            </div>
+          </AnimateIn>
+
+          {/* James */}
+          <AnimateIn className="col-span-2 row-span-2">
+            <div className="border-[3px] border-ink bg-lime p-3 h-full flex flex-col justify-center items-center card-hover text-center" style={{ borderRadius: "var(--radius-xl)" }}>
+              <Avatar src="/avatars/james.png" alt="James" size={36} />
+              <p className="text-xs font-bold text-ink mt-1.5">James M.</p>
+              <p className="text-[10px] text-ink/40">1.2M</p>
+            </div>
+          </AnimateIn>
+
+          {/* Priya */}
+          <AnimateIn className="col-span-1 row-span-2">
+            <div className="border-[3px] border-ink bg-apricot p-2 h-full flex flex-col justify-center items-center card-hover" style={{ borderRadius: "var(--radius-xl)" }}>
+              <Avatar src="/avatars/priya.png" alt="Priya" size={32} />
+              <p className="text-[9px] font-bold text-ink mt-1">310K</p>
+            </div>
+          </AnimateIn>
+
+        </div>
       </div>
     </section>
   );
