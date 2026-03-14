@@ -8,56 +8,53 @@ const links = [
 
 export default function Footer() {
   return (
-    <footer className="bg-ink py-12 border-t-3 border-ink">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="flex flex-col items-center gap-6">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-3">
-            <Image
-              src="/whologo.png"
-              alt="Who?"
-              width={36}
-              height={36}
-              className="border-2 border-white/20"
-              style={{ borderRadius: "8px" }}
-            />
-            <span
-              className="text-2xl font-extrabold text-white tracking-tight"
-              style={{ fontFamily: "var(--font-display)" }}
+    <footer className="neo-card-static bg-ink px-6 py-8">
+      <div className="flex flex-col items-center gap-5">
+        {/* Logo */}
+        <a href="#" className="flex items-center gap-2.5">
+          <Image
+            src="/whologo.png"
+            alt="Who?"
+            width={32}
+            height={32}
+            className="rounded-lg border-2 border-white/20"
+          />
+          <span
+            className="text-xl font-extrabold text-white tracking-tight"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Who?
+          </span>
+        </a>
+
+        {/* Links */}
+        <div className="flex items-center gap-5">
+          {links.map((l) => (
+            <a
+              key={l.label}
+              href={l.href}
+              className="text-xs font-bold text-white/40 hover:text-white transition-colors uppercase tracking-wider"
             >
-              Who?
-            </span>
-          </a>
+              {l.label}
+            </a>
+          ))}
+        </div>
 
-          {/* Nav links */}
-          <div className="flex items-center gap-6">
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="text-sm font-semibold text-white/50 hover:text-white transition-colors uppercase tracking-wide"
-              >
-                {l.label}
-              </a>
-            ))}
-          </div>
-
-          {/* Credit */}
-          <div className="flex flex-col sm:flex-row items-center gap-2 mt-4 text-xs text-white/30 font-medium">
-            <span>
-              Built by{" "}
-              <a
-                href="https://x.com/napsdev"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-bold text-white/50 hover:text-white transition-colors"
-              >
-                @napsdev
-              </a>
-            </span>
-            <span className="hidden sm:inline">&middot;</span>
-            <span>&copy; {new Date().getFullYear()} Who?</span>
-          </div>
+        {/* Credit */}
+        <div className="flex flex-col sm:flex-row items-center gap-2 text-[10px] text-white/20 font-medium">
+          <span>
+            Built by{" "}
+            <a
+              href="https://x.com/napsdev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-bold text-white/30 hover:text-white transition-colors"
+            >
+              @napsdev
+            </a>
+          </span>
+          <span className="hidden sm:inline">&middot;</span>
+          <span>&copy; {new Date().getFullYear()} Who?</span>
         </div>
       </div>
     </footer>

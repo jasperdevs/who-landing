@@ -15,7 +15,6 @@ export default function AnimateIn({ children, className = "" }: AnimateInProps) 
     const el = ref.current;
     if (!el) return;
 
-    // If already in viewport on mount, show immediately
     const rect = el.getBoundingClientRect();
     if (rect.top < window.innerHeight && rect.bottom > 0) {
       setVisible(true);
@@ -43,7 +42,8 @@ export default function AnimateIn({ children, className = "" }: AnimateInProps) 
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(24px)",
-        transition: "opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+        transition:
+          "opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
     >
       {children}

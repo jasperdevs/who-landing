@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 
-/* Slot digit for animated counter */
 function SlotDigit({ digit, prevDigit }: { digit: string; prevDigit: string }) {
   const changed = digit !== prevDigit;
   if (!changed)
@@ -49,10 +48,7 @@ export default function AnimatedCounter() {
   const curr = String(count);
   const prev = prevRef.current.padStart(curr.length, "0");
   return (
-    <span
-      className="text-xs font-extrabold text-ink bg-yellow px-3 py-1 border-2 border-ink tabular-nums inline-flex items-center gap-0.5"
-      style={{ lineHeight: "1.2em" }}
-    >
+    <span className="neo-pill text-[10px] font-extrabold text-ink bg-yellow px-2.5 py-0.5 tabular-nums inline-flex items-center gap-0.5">
       {curr.split("").map((d, i) => (
         <SlotDigit key={i} digit={d} prevDigit={prev[i] || "0"} />
       ))}

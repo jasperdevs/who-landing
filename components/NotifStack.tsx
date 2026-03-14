@@ -50,24 +50,24 @@ export default function NotifStack() {
   }
 
   return (
-    <div ref={containerRef} className="flex flex-col gap-2 p-4">
+    <div ref={containerRef} className="flex flex-col gap-2 p-3">
       {items.map((n, i) => (
         <div
           key={n.key}
-          className={`flex items-center gap-3 px-4 py-3 bg-white/60 border-2 border-ink/10 ${
+          className={`flex items-center gap-3 px-3 py-2.5 bg-cream/80 rounded-xl border border-ink/8 ${
             i === 0 ? "notif-slide-in" : ""
           }`}
         >
-          <div className="w-8 h-8 bg-ink/10 shrink-0" />
+          <div className="w-7 h-7 rounded-full bg-ink/10 shrink-0" />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-ink/30 uppercase">
+            <p className="text-[10px] font-bold text-ink/25 uppercase">
               Notification
             </p>
-            <p className="text-sm text-ink/50 truncate">
+            <p className="text-xs text-ink/40 truncate">
               {n.handle} followed you
             </p>
           </div>
-          <span className="text-[10px] text-ink/30 font-bold">now</span>
+          <span className="text-[9px] text-ink/20 font-bold">now</span>
         </div>
       ))}
     </div>
